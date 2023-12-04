@@ -3,6 +3,7 @@ import {AuditableEntity} from "@/types/auditable-entity";
 interface Office extends AuditableEntity {
   nameRu: string;
   nameKg: string;
+  parentSubjects: {id: number, name: string}
 }
 
 interface CreateOffice {

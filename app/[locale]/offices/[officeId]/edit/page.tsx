@@ -1,7 +1,7 @@
 'use client'
 
 import {notFound} from "next/navigation";
-import {Box, Button, ButtonGroup, Card, CardContent, Container, Typography} from "@mui/material";
+import {Box, Button, ButtonGroup, Card, CardContent, Container, MenuItem, TextField, Typography} from "@mui/material";
 import {useTranslations} from "next-intl";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {ArrowLeft as ArrowLeftIcon} from "@/icons/arrow-left";
@@ -16,6 +16,9 @@ import {FormikTextField} from "@/components/formik-text-field";
 import {nameof} from "@/utils/nameof";
 import {SubmitButton} from "@/components/buttons/submit-button";
 import {InformationCircleOutlined as InformationCircleOutlinedIcon} from "@/icons/information-circle-outlined";
+import SelectList from "@/components/select-field";
+import {Label} from "@mui/icons-material";
+import InputLabel from "@mui/material/InputLabel";
 
 const EditOfficeForm = ({office}: {office: Office}) => {
   const t = useTranslations()
@@ -81,6 +84,11 @@ const EditOfficeForm = ({office}: {office: Office}) => {
               formik={formik}
               labelRequired
             />
+          </Grid>
+          <Grid md={6} xs={12}>
+            <SelectList options={[{ value: '1', label: 'Chocolate' }, { value: '2', label: 'Strawberry' }, { value: '3', label: 'Vanilla' }]}
+                        currentValue={'3'}
+             label={"Parent Subject"}/>
           </Grid>
 
           <Grid md={12} xs={12}>
