@@ -59,7 +59,7 @@ const OfficesTable = ({offices, isLoading}: {offices: Office[], isLoading: boole
                 <Link href={`/offices/${office.id}`}>
                   <ArrowRightIconButton/>
                 </Link>
-                <Link href={`offices/${office.id}/edit`}>
+                <Link href={`/offices/${office.id}/edit`}>
                   <PencilIconButton/>
                 </Link>
               </TableCell>

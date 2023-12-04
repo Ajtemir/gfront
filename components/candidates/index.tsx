@@ -101,10 +101,10 @@ const CandidatesTable = ({candidates, isLoading}: { candidates: CandidateWithout
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                  <Link href={`candidates/${candidate.id}`}>
+                  <Link href={`/candidates/${candidate.id}`}>
                     <ArrowRightIconButton/>
                   </Link>
-                  <Link href={`candidates/${candidate.id}/edit`}>
+                  <Link href={`/candidates/${candidate.id}/edit`}>
                     <PencilIconButton/>
                   </Link>
                 </TableCell>
