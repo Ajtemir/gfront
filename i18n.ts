@@ -1,6 +1,6 @@
 import {getRequestConfig} from 'next-intl/server';
 
-const Locales = ['ru', 'en', 'kg'] as const;
+const Locales = ['ru', 'en'] as const;
 type Locale = typeof Locales[number]
 
 const DefaultLocale: Locale = 'ru';
@@ -21,10 +21,6 @@ const LocaleOptions: LocaleOption = {
     label: 'English',
     icon: '/icons/us_flag.svg'
   },
-  kg: {
-    label: 'Kyrgyz',
-    icon: '/icons/ru_flag.svg'
-  }
 }
 
 export default getRequestConfig(async ({locale}) => ({
