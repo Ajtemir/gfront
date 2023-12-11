@@ -16,9 +16,7 @@ import {FormikTextField} from "@/components/formik-text-field";
 import {nameof} from "@/utils/nameof";
 import {SubmitButton} from "@/components/buttons/submit-button";
 import {InformationCircleOutlined as InformationCircleOutlinedIcon} from "@/icons/information-circle-outlined";
-import SelectList from "@/components/select-field";
-import {Label} from "@mui/icons-material";
-import InputLabel from "@mui/material/InputLabel";
+import MultipleSelect from "@/components/multi-select";
 
 const EditOfficeForm = ({office}: {office: Office}) => {
   const t = useTranslations()
@@ -86,9 +84,18 @@ const EditOfficeForm = ({office}: {office: Office}) => {
             />
           </Grid>
           <Grid md={6} xs={12}>
-            <SelectList options={[{ value: '1', label: 'Chocolate' }, { value: '2', label: 'Strawberry' }, { value: '3', label: 'Vanilla' }]}
-                        currentValue={'3'}
-             label={"Parent Subject"}/>
+            <MultipleSelect options={[
+              {id:'1',value:'Oliver Hansen'},
+              {id:'2',value:'Van Henry'},
+              {id:'3',value:'April Tucker'},
+              {id:'4',value:'Ralph Hubbard'},
+              {id:'5',value:'Omar Alexander'},
+              {id:'6',value:'Carlos Abbott'},
+              {id:'7',value:'Miriam Wagner'},
+              {id:'8',value:'Bradley Wilkerson'},
+              {id:'9',value:'Virginia Andrews'},
+              {id:'10',value:'Kelly Snyder'},
+            ]} selectedOptions={[]}/>
           </Grid>
 
           <Grid md={12} xs={12}>
