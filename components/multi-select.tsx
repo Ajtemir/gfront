@@ -1,108 +1,74 @@
-import React, {JSX, useEffect} from 'react';
-import { Theme, useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import {ChangeEvent, FC, useRef, useState} from "react";
+import {Button, Checkbox, FormControlLabel, Menu, MenuItem} from "@mui/material";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
 
-const options:Option[] = [
-    {id:'1',value:'Oliver Hansen'},
-    {id:'2',value:'Van Henry'},
-    {id:'3',value:'April Tucker'},
-    {id:'4',value:'Ralph Hubbard'},
-    {id:'5',value:'Omar Alexander'},
-    {id:'6',value:'Carlos Abbott'},
-    {id:'7',value:'Miriam Wagner'},
-    {id:'8',value:'Bradley Wilkerson'},
-    {id:'9',value:'Virginia Andrews'},
-    {id:'10',value:'Kelly Snyder'},
-];
+interface MultiSelectProps {
+    label: string;
+    onChange?: (value: unknown[]) => void;
+    options: { label: string; value: unknown; }[];
+    value: unknown[];
+}
 
-function getStyles(option: Option, options: Option[], theme: Theme) {
-    return {
-        fontWeight:
-            options.indexOf(option) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
+export const MultiSelect: FC<MultiSelectProps> = ({ label, onChange, options, value = [], ...other } ) => {
+    const anchorRef = useRef<HTMLButtonElement | null>(null);
+    const [openMenu, setOpenMenu] = useState<boolean>(false);
+
+    const handleOpenMenu = (): void => {
+        setOpenMenu(true);
     };
-}
-interface MultipleSelectProps {
-    options: Option[],
-    selectedOptions: Option[],
-}
 
-interface Option {
-    id:string
-    value: string
-}
-export default function MultipleSelect({options, selectedOptions} : MultipleSelectProps): JSX.Element {
-    const theme = useTheme();
-    const [chosenOptions, setChosenOptions] = React.useState<Option[]>(selectedOptions);
+    const handleCloseMenu = (): void => {
+        setOpenMenu(false);
+    };
 
-    const handleChange = (event: SelectChangeEvent<Option>) => {
-        const {
-            target: { value },
-        } = event;
-        setChosenOptions(
-            [...chosenOptions, value as Option]
-        );
-        console.log(value as Option)
+    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        let newValue = [...value];
+
+        if (event.target.checked) {
+            newValue.push(event.target.value);
+        } else {
+            newValue = newValue.filter((item) => item !== event.target.value);
+        }
+
+        onChange?.(newValue);
     };
 
     return (
-        <div>
-            <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel id="demo-multiple-name-label">Name</InputLabel>
-                <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    multiple
-                    value={selectedOptions}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Name" />}
-                    MenuProps={MenuProps}
-                >
-                    {options.map((option) => (
-                        <MenuItem
-                            key={option.id}
-                            value={option.value}
-                            style={getStyles(option, chosenOptions, theme)}
-                        >
-                            {option.value}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        </div>
+        <>
+            <Button
+                color="inherit"
+                // endIcon={<ChevronDownIcon fontSize="small" />}
+                onClick={handleOpenMenu}
+                ref={anchorRef}
+                {...other}
+            >
+                {label}
+            </Button>
+            <Menu
+                anchorEl={anchorRef.current}
+                onClose={handleCloseMenu}
+                open={openMenu}
+                PaperProps={{ style: { width: 250 } }}
+            >
+                {options.map((option) => (
+                    <MenuItem key={option.label}>
+                        <FormControlLabel
+                            control={(
+                                <Checkbox
+                                    checked={value.includes(option.value)}
+                                    onChange={handleChange}
+                                    value={option.value}
+                                />
+                            )}
+                            label={option.label}
+                            sx={{
+                                flexGrow: 1,
+                                mr: 0
+                            }}
+                        />
+                    </MenuItem>
+                ))}
+            </Menu>
+        </>
     );
-}
-
-// interface MultiSelectProps {
-//     initialValues: string[],
-//     allValuesAndLabels: {
-//         value: string
-//         label: string
-//     }[]
-// }
-
-// const MultiSelect = ({initialValues, allValuesAndLabels} : MultiSelectProps) => {
-//     return (
-//         <div>
-//
-//         </div>
-//     );
-// };
-//
-// export default MultiSelect;
+};
