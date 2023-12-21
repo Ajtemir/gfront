@@ -1,74 +1,72 @@
-import {ChangeEvent, FC, useRef, useState} from "react";
-import {Button, Checkbox, FormControlLabel, Menu, MenuItem} from "@mui/material";
+import React, {ChangeEvent, useState} from "react";
+import { TextField, Autocomplete, MenuItem } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import {nameof} from "@/utils/nameof";
+import {CreateOffice} from "@/types/office";
+import {FormikInterface, translateYupError} from "@/components/formik-interface";
+import {useTranslations} from "next-intl";
 
+export default function MultiSelect({values, name, onChange, formik}:MultiSelectProps): React.JSX.Element {
+    const [options, setOptions] = useState<MultiselectOption[]>(values)
+    const {errors,touched, setFieldValue} = formik
+    const t = useTranslations()
+    // @ts-ignore
+    return (
+        <Autocomplete
+            // @ts-ignore
+            name={name}
+            multiple
+            options={options}
+            getOptionLabel={(option) => option.value}
+            disableCloseOnSelect
+            onChange={(_, value) => {
+                console.log(value)
+                onChange(name, value)
+            }}
+            renderInput={(params) => (
 
-interface MultiSelectProps {
-    label: string;
-    onChange?: (value: unknown[]) => void;
-    options: { label: string; value: unknown; }[];
-    value: unknown[];
+                <TextField
+                    {...params}
+                    name={name}
+                    key={name}
+                    variant="outlined"
+                    label="Multiple Autocomplete"
+                    placeholder="Multiple Autocomplete"
+                    error={touched[name] && Boolean(errors[name])}
+                    onChange={formik.handleChange}
+                    // @ts-ignore
+                    helperText={touched[name] && errors[name] && (<>{translateYupError(errors[name], t)}</>)}
+
+                />
+            )}
+            defaultValue={options.filter(x=>x.selected)}
+            renderOption={(props, option, { selected }) => (
+                <MenuItem
+                    {...props}
+                    key={option.id}
+                    value={option.value}
+                    sx={{ justifyContent: "space-between" }}
+                    onChange={() => {
+                        // setOptions(options.map(x=>x.id===option.id ? {...x, selected: !x.selected} : x))
+                    }}
+                >
+                    {option.value}
+                    {selected ? <CheckIcon color="info" /> : null}
+                </MenuItem>
+            )}
+        />
+    );
 }
 
-export const MultiSelect: FC<MultiSelectProps> = ({ label, onChange, options, value = [], ...other } ) => {
-    const anchorRef = useRef<HTMLButtonElement | null>(null);
-    const [openMenu, setOpenMenu] = useState<boolean>(false);
+export interface MultiselectOption {
+    id: number | string
+    value: string
+    selected: boolean | null
+}
 
-    const handleOpenMenu = (): void => {
-        setOpenMenu(true);
-    };
-
-    const handleCloseMenu = (): void => {
-        setOpenMenu(false);
-    };
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        let newValue = [...value];
-
-        if (event.target.checked) {
-            newValue.push(event.target.value);
-        } else {
-            newValue = newValue.filter((item) => item !== event.target.value);
-        }
-
-        onChange?.(newValue);
-    };
-
-    return (
-        <>
-            <Button
-                color="inherit"
-                // endIcon={<ChevronDownIcon fontSize="small" />}
-                onClick={handleOpenMenu}
-                ref={anchorRef}
-                {...other}
-            >
-                {label}
-            </Button>
-            <Menu
-                anchorEl={anchorRef.current}
-                onClose={handleCloseMenu}
-                open={openMenu}
-                PaperProps={{ style: { width: 250 } }}
-            >
-                {options.map((option) => (
-                    <MenuItem key={option.label}>
-                        <FormControlLabel
-                            control={(
-                                <Checkbox
-                                    checked={value.includes(option.value)}
-                                    onChange={handleChange}
-                                    value={option.value}
-                                />
-                            )}
-                            label={option.label}
-                            sx={{
-                                flexGrow: 1,
-                                mr: 0
-                            }}
-                        />
-                    </MenuItem>
-                ))}
-            </Menu>
-        </>
-    );
-};
+interface MultiSelectProps {
+    values:MultiselectOption[];
+    name: string;
+    onChange: (propertyName: string, options:MultiselectOption[]) => void;
+    formik: FormikInterface<any>;
+}

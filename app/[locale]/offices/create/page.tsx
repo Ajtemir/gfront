@@ -19,27 +19,37 @@ import {useImageUploader} from "@/hooks/use-image-uploader";
 import {ImageUploader} from "@/components/image-uploader";
 import {megabytesToBytes} from "@/utils/megabytes-to-bytes";
 import {TrashButton} from "@/components/buttons/trash-button";
-import {useCreateOffice} from "@/backend-api/office-api";
+import {useCreateOffice, useOffices} from "@/backend-api/office-api";
 import {useRouter} from "next/navigation";
-import {ChangeEvent} from "react";
+import {ChangeEvent, useEffect} from "react";
+import MultiSelect, {MultiselectOption} from "@/components/multi-select";
 
 const initialValues: CreateOffice = {
   id: null,
   nameRu: '',
   nameKg: '',
+  parentOffices: [],
 }
 
 const CreateOfficePage = () => {
   const t = useTranslations()
   const router = useRouter()
   const createOfficeMutation = useCreateOffice()
+  const {data: offices = [], isLoading} = useOffices()
+  const officesOptions = offices.map(office => {
+    return {
+      id : office.id,
+      value : `${office.id} => ${office.nameKg}`,
+      selected: false
+    } as MultiselectOption
+  }
+);
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: CreateOfficeSchema,
     onSubmit: async (values) => {
       const trySubmit = async () => {
-
         const request = CreateOfficeSchema.cast(values) as CreateOffice
         const office = await createOfficeMutation.mutateAsync(request)
         router.push(`/offices/${office.id}`)
@@ -118,6 +128,14 @@ const CreateOfficePage = () => {
                 labelRequired
               />
             </Grid>
+
+              <Grid md={6} xs={12}>
+                  <MultiSelect
+                      values={officesOptions}
+                      onChange={formik.setFieldValue}
+                      name={nameof<CreateOffice>('parentOffices')}
+                      formik={formik}/>
+              </Grid>
 
             <Grid md={12} xs={12}>
               <ButtonGroup variant='contained'>

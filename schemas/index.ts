@@ -291,6 +291,7 @@ const OfficeSchema: Schema<Office> = AuditableEntitySchema.shape({
   id: idSchema,
   nameRu: string().required().label('Name (ru)'),
   nameKg: string().required().label('Name (kg)'),
+  parentOffices: array().required().label('Parent offices')
 })
 
 const OfficeArraySchema = array().of(OfficeSchema.required()).default([])
@@ -299,6 +300,7 @@ const CreateOfficeSchema: Schema<CreateOffice> = object({
   id: idSchema.min(1),
   nameRu: string().required().max(256).label('Name (ru)'),
   nameKg: string().required().max(256).label('Name (kg)'),
+  parentOffices: array().required().min(1).label('Parent offices'),
 })
 
 const UpdateOfficeDetailsSchema: Schema<UpdateOfficeDetails> = object({
