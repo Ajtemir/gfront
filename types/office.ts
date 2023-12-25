@@ -4,7 +4,7 @@ import {MultiselectOption} from "@/components/multi-select";
 interface Office extends AuditableEntity {
   nameRu: string;
   nameKg: string;
-  parentOffices: {id: number, name: string}[]
+  parentOffices: Office[]
 }
 
 interface CreateOffice {
@@ -18,6 +18,7 @@ interface UpdateOfficeDetails {
   id: number;
   nameRu: string;
   nameKg: string;
+  parentOffices: MultiselectOption[];
 }
 
 export type {

@@ -307,6 +307,7 @@ const UpdateOfficeDetailsSchema: Schema<UpdateOfficeDetails> = object({
   id: idSchema,
   nameRu: string().required().max(256).label('Name (ru)'),
   nameKg: string().required().max(256).label('Name (kg)'),
+  parentOffices: array().required().min(1).label('Parent offices')
 })
 
 

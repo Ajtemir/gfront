@@ -1,14 +1,12 @@
-import React, {ChangeEvent, useState} from "react";
-import { TextField, Autocomplete, MenuItem } from "@mui/material";
+import React from "react";
+import {TextField, Autocomplete, MenuItem} from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import {nameof} from "@/utils/nameof";
-import {CreateOffice} from "@/types/office";
 import {FormikInterface, translateYupError} from "@/components/formik-interface";
 import {useTranslations} from "next-intl";
+import {FormikValues} from "formik";
 
-export default function MultiSelect({values, name, onChange, formik}:MultiSelectProps): React.JSX.Element {
-    const [options, setOptions] = useState<MultiselectOption[]>(values)
-    const {errors,touched, setFieldValue} = formik
+export default function MultiSelect<T extends FormikValues>({values, name, formik,options}: MultiSelectProps<T>): React.JSX.Element {
+    const {errors, touched, setFieldValue, initialValues} = formik
     const t = useTranslations()
     // @ts-ignore
     return (
@@ -16,12 +14,11 @@ export default function MultiSelect({values, name, onChange, formik}:MultiSelect
             // @ts-ignore
             name={name}
             multiple
-            options={options}
+            options={values ?? options}
             getOptionLabel={(option) => option.value}
             disableCloseOnSelect
             onChange={(_, value) => {
-                console.log(value)
-                onChange(name, value)
+                setFieldValue(name, value)
             }}
             renderInput={(params) => (
 
@@ -40,18 +37,19 @@ export default function MultiSelect({values, name, onChange, formik}:MultiSelect
                 />
             )}
             defaultValue={options.filter(x=>x.selected)}
-            renderOption={(props, option, { selected }) => (
+            renderOption={(props, option, {selected}) => (
                 <MenuItem
                     {...props}
+                    // selected={true}
                     key={option.id}
                     value={option.value}
-                    sx={{ justifyContent: "space-between" }}
+                    sx={{justifyContent: "space-between"}}
                     onChange={() => {
                         // setOptions(options.map(x=>x.id===option.id ? {...x, selected: !x.selected} : x))
                     }}
                 >
                     {option.value}
-                    {selected ? <CheckIcon color="info" /> : null}
+                    {selected ? <CheckIcon color="info"/> : null}
                 </MenuItem>
             )}
         />
@@ -61,12 +59,12 @@ export default function MultiSelect({values, name, onChange, formik}:MultiSelect
 export interface MultiselectOption {
     id: number | string
     value: string
-    selected: boolean | null
+    selected: boolean
 }
 
-interface MultiSelectProps {
-    values:MultiselectOption[];
+interface MultiSelectProps<T extends FormikValues> {
+    values?: MultiselectOption[] | null;
+    options: MultiselectOption[];
     name: string;
-    onChange: (propertyName: string, options:MultiselectOption[]) => void;
-    formik: FormikInterface<any>;
+    formik: FormikInterface<T>;
 }

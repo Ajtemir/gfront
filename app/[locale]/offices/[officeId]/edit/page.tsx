@@ -5,7 +5,7 @@ import {Box, Button, ButtonGroup, Card, CardContent, Container, MenuItem, TextFi
 import {useTranslations} from "next-intl";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {ArrowLeft as ArrowLeftIcon} from "@/icons/arrow-left";
-import {useOffice, useUpdateOfficeDetails} from "@/backend-api/office-api";
+import {useOffice, useOffices, useUpdateOfficeDetails} from "@/backend-api/office-api";
 import {Office, UpdateOfficeDetails} from "@/types/office";
 import {useFormik} from "formik";
 import {UpdateOfficeDetailsSchema} from "@/schemas";
@@ -16,16 +16,27 @@ import {FormikTextField} from "@/components/formik-text-field";
 import {nameof} from "@/utils/nameof";
 import {SubmitButton} from "@/components/buttons/submit-button";
 import {InformationCircleOutlined as InformationCircleOutlinedIcon} from "@/icons/information-circle-outlined";
-import MultipleSelect from "@/components/multi-select";
+import MultipleSelect, {MultiselectOption} from "@/components/multi-select";
 
 const EditOfficeForm = ({office}: {office: Office}) => {
   const t = useTranslations()
   const updateOfficeDetailsMutation = useUpdateOfficeDetails()
-
+  const {data:allOffices, isLoading} = useOffices()
+  const parentIds = office.parentOffices.map(x=>x.id);
+  console.log(parentIds)
+  const filteredOffices = allOffices?.map(x=> {
+    console.log(parentIds.includes(x.id))
+    return {
+      id: x.id,
+      value: x.nameKg,
+      selected: parentIds.includes(x.id),
+    } as MultiselectOption;
+  }) ?? []
   const initialValues: UpdateOfficeDetails = {
     id: office.id,
     nameRu: office.nameRu,
-    nameKg: office.nameKg
+    nameKg: office.nameKg,
+    parentOffices: filteredOffices
   }
 
   const formik = useFormik({
@@ -84,18 +95,7 @@ const EditOfficeForm = ({office}: {office: Office}) => {
             />
           </Grid>
           <Grid md={6} xs={12}>
-            <MultipleSelect options={[
-              {id:'1',value:'Oliver Hansen'},
-              {id:'2',value:'Van Henry'},
-              {id:'3',value:'April Tucker'},
-              {id:'4',value:'Ralph Hubbard'},
-              {id:'5',value:'Omar Alexander'},
-              {id:'6',value:'Carlos Abbott'},
-              {id:'7',value:'Miriam Wagner'},
-              {id:'8',value:'Bradley Wilkerson'},
-              {id:'9',value:'Virginia Andrews'},
-              {id:'10',value:'Kelly Snyder'},
-            ]} selectedOptions={[]}/>
+            <MultipleSelect options={filteredOffices} name={nameof<UpdateOfficeDetails>('parentOffices')} formik={formik}/>
           </Grid>
 
           <Grid md={12} xs={12}>

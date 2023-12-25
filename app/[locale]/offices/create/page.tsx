@@ -132,7 +132,6 @@ const CreateOfficePage = () => {
               <Grid md={6} xs={12}>
                   <MultiSelect
                       values={officesOptions}
-                      onChange={formik.setFieldValue}
                       name={nameof<CreateOffice>('parentOffices')}
                       formik={formik}/>
               </Grid>
