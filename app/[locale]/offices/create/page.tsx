@@ -131,9 +131,9 @@ const CreateOfficePage = () => {
 
               <Grid md={6} xs={12}>
                   <MultiSelect
-                      values={officesOptions}
+                      options={officesOptions}
                       name={nameof<CreateOffice>('parentOffices')}
-                      formik={formik}/>
+                      formik={formik} label={"Parent offices"} placeholder={"Type office name"}/>
               </Grid>
 
             <Grid md={12} xs={12}>

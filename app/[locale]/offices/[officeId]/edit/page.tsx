@@ -18,25 +18,17 @@ import {SubmitButton} from "@/components/buttons/submit-button";
 import {InformationCircleOutlined as InformationCircleOutlinedIcon} from "@/icons/information-circle-outlined";
 import MultipleSelect, {MultiselectOption} from "@/components/multi-select";
 
-const EditOfficeForm = ({office}: {office: Office}) => {
+const EditOfficeForm = ({ officeId}: {officeId:number}) => {
+  const {data:office} = useOffice(officeId)
   const t = useTranslations()
   const updateOfficeDetailsMutation = useUpdateOfficeDetails()
-  const {data:allOffices, isLoading} = useOffices()
-  const parentIds = office.parentOffices.map(x=>x.id);
-  console.log(parentIds)
-  const filteredOffices = allOffices?.map(x=> {
-    console.log(parentIds.includes(x.id))
-    return {
-      id: x.id,
-      value: x.nameKg,
-      selected: parentIds.includes(x.id),
-    } as MultiselectOption;
-  }) ?? []
+  const {data:offices, isLoading, error} = useOffices()
+  const parentIds = office!.parentOffices.map(x=>x.id);
   const initialValues: UpdateOfficeDetails = {
-    id: office.id,
-    nameRu: office.nameRu,
-    nameKg: office.nameKg,
-    parentOffices: filteredOffices
+    id: office!.id,
+    nameRu: office!.nameRu,
+    nameKg: office!.nameKg,
+    parentOffices: office!.parentOffices
   }
 
   const formik = useFormik({
@@ -60,54 +52,66 @@ const EditOfficeForm = ({office}: {office: Office}) => {
   })
 
   return (
-    <Card sx={{mt: 3}}>
-      <CardContent>
-        <Grid
-          container
-          spacing={3}
-          component='form'
-          onSubmit={formik.handleSubmit}
-        >
-          <Grid md={6} xs={12}>
-            <FormikTextField
-              name={nameof<UpdateOfficeDetails>('id')}
-              label='Id'
-              formik={formik}
-              labelRequired
-            />
-          </Grid>
+      <div>
+        {isLoading && <h1>Идет загрузка...</h1>}
+        {error && <h1>Произошла ошибка при загрузке...</h1>}
+        {offices && office && <Card sx={{mt: 3}}>
+          <CardContent>
+            <Grid
+                container
+                spacing={3}
+                component='form'
+                onSubmit={formik.handleSubmit}
+            >
+              <Grid md={6} xs={12}>
+                <FormikTextField
+                    name={nameof<UpdateOfficeDetails>('id')}
+                    label='Id'
+                    formik={formik}
+                    labelRequired
+                />
+              </Grid>
 
-          <Grid/>
-          <Grid md={6} xs={12}>
-            <FormikTextField
-              name={nameof<UpdateOfficeDetails>('nameRu')}
-              label='Name (ru)'
-              formik={formik}
-              labelRequired
-            />
-          </Grid>
-          <Grid md={6} xs={12}>
-            <FormikTextField
-              name={nameof<UpdateOfficeDetails>('nameKg')}
-              label='Name (kg)'
-              formik={formik}
-              labelRequired
-            />
-          </Grid>
-          <Grid md={6} xs={12}>
-            <MultipleSelect options={filteredOffices} name={nameof<UpdateOfficeDetails>('parentOffices')} formik={formik}/>
-          </Grid>
+              <Grid/>
+              <Grid md={6} xs={12}>
+                <FormikTextField
+                    name={nameof<UpdateOfficeDetails>('nameRu')}
+                    label='Name (ru)'
+                    formik={formik}
+                    labelRequired
+                />
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormikTextField
+                    name={nameof<UpdateOfficeDetails>('nameKg')}
+                    label='Name (kg)'
+                    formik={formik}
+                    labelRequired
+                />
+              </Grid>
+              <Grid md={6} xs={12}>
+                <MultipleSelect options={offices.map(x=> {
+                  return {
+                    id: x.id,
+                    value: `${x.id} => ${x.nameKg}`,
+                    selected: parentIds.includes(x.id)
+                  } as MultiselectOption
+                })} name={nameof<UpdateOfficeDetails>('parentOffices')} formik={formik} label={"Parent offices"} placeholder={"Введите название офиса"}/>
+              </Grid>
 
-          <Grid md={12} xs={12}>
-            <ButtonGroup variant='contained'>
-              <SubmitButton>
-                {t('Save')}
-              </SubmitButton>
-            </ButtonGroup>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+              <Grid md={12} xs={12}>
+                <ButtonGroup variant='contained'>
+                  <SubmitButton>
+                    {t('Save')}
+                  </SubmitButton>
+                </ButtonGroup>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>}
+      </div>
+
+
   )
 }
 
@@ -118,7 +122,7 @@ const FetchOffice = ({officeId}: {officeId: number}) => {
     return null
   }
 
-  return <EditOfficeForm office={office}/>
+  return <EditOfficeForm officeId={officeId}/>
 }
 
 const EditOfficePage = ({params}:  {params: { officeId: number }}) => {

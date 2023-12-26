@@ -13,7 +13,7 @@ const officeKeys = {
 }
 
 
-const useOffices = () => useQuery({
+const useOffices = () => useQuery<Office[], Error>({
   queryKey: officeKeys.all,
   queryFn: () => fetchWithCredentials(`${baseUrl}`)
     .then(response => response.json())

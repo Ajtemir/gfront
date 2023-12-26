@@ -5,47 +5,47 @@ import {FormikInterface, translateYupError} from "@/components/formik-interface"
 import {useTranslations} from "next-intl";
 import {FormikValues} from "formik";
 
-export default function MultiSelect<T extends FormikValues>({values, name, formik,options}: MultiSelectProps<T>): React.JSX.Element {
+export default function MultiSelect<T extends FormikValues>({options, name, formik, label, placeholder}: MultiSelectProps<T>): React.JSX.Element {
     const {errors, touched, setFieldValue, initialValues} = formik
     const t = useTranslations()
+    console.log(options)
     // @ts-ignore
     return (
         <Autocomplete
+            isOptionEqualToValue={(option, value) => {
+                return option.id === value.id
+            }}
             // @ts-ignore
             name={name}
             multiple
-            options={values ?? options}
+            options={options}
             getOptionLabel={(option) => option.value}
             disableCloseOnSelect
             onChange={(_, value) => {
                 setFieldValue(name, value)
             }}
             renderInput={(params) => (
-
-                <TextField
-                    {...params}
-                    name={name}
-                    key={name}
-                    variant="outlined"
-                    label="Multiple Autocomplete"
-                    placeholder="Multiple Autocomplete"
-                    error={touched[name] && Boolean(errors[name])}
-                    onChange={formik.handleChange}
-                    // @ts-ignore
-                    helperText={touched[name] && errors[name] && (<>{translateYupError(errors[name], t)}</>)}
-
-                />
+                    <TextField
+                        {...params}
+                        name={name}
+                        key={name}
+                        variant="outlined"
+                        label={label}
+                        placeholder={placeholder}
+                        error={touched[name] && Boolean(errors[name])}
+                        onChange={formik.handleChange}
+                        // @ts-ignore
+                        helperText={touched[name] && errors[name] && (<>{translateYupError(errors[name], t)}</>)}
+                    />
             )}
             defaultValue={options.filter(x=>x.selected)}
             renderOption={(props, option, {selected}) => (
                 <MenuItem
                     {...props}
-                    // selected={true}
                     key={option.id}
                     value={option.value}
                     sx={{justifyContent: "space-between"}}
                     onChange={() => {
-                        // setOptions(options.map(x=>x.id===option.id ? {...x, selected: !x.selected} : x))
                     }}
                 >
                     {option.value}
@@ -63,8 +63,9 @@ export interface MultiselectOption {
 }
 
 interface MultiSelectProps<T extends FormikValues> {
-    values?: MultiselectOption[] | null;
     options: MultiselectOption[];
     name: string;
     formik: FormikInterface<T>;
+    label: string;
+    placeholder: string;
 }
