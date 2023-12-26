@@ -84,7 +84,7 @@ const OfficePage = ({
             </ButtonGroup>
           </Link>
 
-          <Link href={`offices/${officeId}/edit`}>
+          <Link href={`/offices/${officeId}/edit`}>
             <ButtonGroup variant='contained' sx={{ ml: 1 }}>
               <Button startIcon={<PencilIcon fontSize='small'/>} color='info'>
                 {t('Edit')}
