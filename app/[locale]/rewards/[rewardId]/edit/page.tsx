@@ -160,7 +160,7 @@ const RewardEditPage = ({params}: {
         </Typography>
         
         <div>
-          <Link href={`rewards/`}>
+          <Link href={`/rewards/`}>
             <ButtonGroup variant='contained'>
               <Button startIcon={<ArrowLeftIcon fontSize='small' />}>
                 {t('Rewards')}
@@ -168,7 +168,7 @@ const RewardEditPage = ({params}: {
             </ButtonGroup>
           </Link>
           
-          <Link href={`rewards/${rewardId}`}>
+          <Link href={`/rewards/${rewardId}`}>
             <ButtonGroup variant='contained' sx={{ml: 1}}>
               <Button startIcon={<InformationCircleOutlined fontSize='small' />} color='info'>
                 {t('Details')}

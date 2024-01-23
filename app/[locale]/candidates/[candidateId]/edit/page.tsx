@@ -78,7 +78,7 @@ const LoadCandidate = ({candidateId}: { candidateId: number }) => {
             </ButtonGroup>
           </Link>
 
-          <Link href={`candidates/${candidateId}`} tabIndex={-1}>
+          <Link href={`/candidates/${candidateId}`} tabIndex={-1}>
             <ButtonGroup variant='contained' sx={{ml: 1}}>
               <Button startIcon={<InformationCircleOutlinedIcon fontSize='small'/>}>
                 {t('Go back to details')}

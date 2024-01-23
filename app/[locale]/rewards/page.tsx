@@ -80,10 +80,10 @@ const RewardsTable = ({rewards, isLoading}: {rewards: Reward[], isLoading: boole
                     alignItems: 'center'
                   }}
                 >
-                  <Link href={`rewards/${reward.id}`}>
+                  <Link href={`/rewards/${reward.id}`}>
                     <ArrowRightIconButton/>
                   </Link>
-                  <Link href={`rewards/${reward.id}/edit`}>
+                  <Link href={`/rewards/${reward.id}/edit`}>
                     <PencilIconButton/>
                   </Link>
                 </TableCell>

@@ -95,7 +95,7 @@ const RewardPage = ({
             </ButtonGroup>
           </Link>
           
-          <Link href={`rewards/${rewardId}/edit`}>
+          <Link href={`/rewards/${rewardId}/edit`}>
             <ButtonGroup variant='contained' sx={{ ml: 1 }}>
               <Button startIcon={<PencilIcon fontSize='small'/>} color='info'>
                 {t('Edit')}
