@@ -107,7 +107,7 @@ const CandidatesTable = ({candidates, isLoading}: { candidates: CandidateWithout
                   <Link href={`/candidates/${candidate.id}/edit`}>
                     <PencilIconButton/>
                   </Link>
-                  <Link href={`/applications/create/${candidate.id}`}>
+                  <Link href={`/applications/create?candidateId=${candidate.id}`}>
                     <PlusIcon/>
                   </Link>
                 </TableCell>

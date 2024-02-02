@@ -73,6 +73,12 @@ const useDeleteReward = () => {
     })
 }
 
+const useRewardsCandidateId = (id: number) => useQuery<Reward[]>({
+    queryFn: () => fetchWithCredentials(`${baseUrl}/GetRewardsByCandidateId?candidateId=${id}`)
+        .then(response => response.json())
+        .then(data => data as Reward[]),
+})
+
 
 export {
     useCreateReward,
@@ -80,4 +86,5 @@ export {
     useReward,
     useUpdateReward,
     useDeleteReward,
+    useRewardsCandidateId
 }
