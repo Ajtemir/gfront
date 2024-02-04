@@ -11,6 +11,7 @@ import { NextIntlClientCustom } from "@/components/adapters/next-intl-client-cus
 import { LocalizationProviderAdapter } from "@/components/adapters/localization-provider-adapter";
 import { AuthProvider } from "@/contexts/auth-context";
 import { QueryClientProviderAdapter } from "@/components/adapters/query-client-provider-adapter";
+import ReduxProvider from "@/store/ReduxProvider";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -42,7 +43,7 @@ export default async function RootLayout({
   return (
     <html lang={actualLocale}>
     <body className={inter.className}>
-
+    <ReduxProvider>
     <SettingsProvider>
       <AuthProvider>
         <ThemeProviderAdapter>
@@ -59,6 +60,7 @@ export default async function RootLayout({
         </ThemeProviderAdapter>
       </AuthProvider>
     </SettingsProvider>
+    </ReduxProvider>
 
     </body>
     </html>
