@@ -11,7 +11,7 @@ export const applicationApi = createApi({
 
         getApplicationById : build.query<Application, number>({
             query(id: number) {
-                return 'applications/' + id;
+                return `applications/${id}`;
             },
         }),
 
@@ -21,7 +21,9 @@ export const applicationApi = createApi({
                 method: 'POST',
                 body: application
             })
-        })
+        }),
+
+
 
     })
 })

@@ -3,11 +3,12 @@ import React from 'react';
 import {applicationApi, useGetApplicationByIdQuery, useUpdateApplicationMutation} from "@/backend-api/application-api";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {removeNote} from "@/store/reducers/testReducer"
-import {Box, Button, ButtonGroup, Container, Typography} from "@mui/material";
+import {Box, Button, ButtonGroup, Card, Container, Typography} from "@mui/material";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {ArrowLeft as ArrowLeftIcon} from "@/icons/arrow-left";
 import {InformationCircleOutlined as InformationCircleOutlinedIcon} from "@/icons/information-circle-outlined";
 import {useTranslations} from "next-intl";
+import {EditApplicationForm} from "@/components/applications/edit-application-form";
 
 const EditApplicationPage = ({params}: {
     params: {
@@ -30,9 +31,9 @@ const EditApplicationPage = ({params}: {
                 flexWrap='wrap'
                 mb={3}
             >
-                {/*<Typography variant='h4'>*/}
-                {/*    {renderCandidateType(candidate.candidateType)}*/}
-                {/*</Typography>*/}
+                <Typography variant='h4'>
+                    {t('Application')}
+                </Typography>
 
                 <div>
                     <Link href='/applications' tabIndex={-1}>
@@ -42,18 +43,13 @@ const EditApplicationPage = ({params}: {
                             </Button>
                         </ButtonGroup>
                     </Link>
-
-                    {/*<Link href={`/candidates/${candidateId}`} tabIndex={-1}>*/}
-                    {/*    <ButtonGroup variant='contained' sx={{ml: 1}}>*/}
-                    {/*        <Button startIcon={<InformationCircleOutlinedIcon fontSize='small'/>}>*/}
-                    {/*            {t('Go back to details')}*/}
-                    {/*        </Button>*/}
-                    {/*    </ButtonGroup>*/}
-                    {/*</Link>*/}
                 </div>
+
             </Box>
 
-
+            {isLoading && <h1>Идет загрузка...</h1>}
+            {error && <h1>Произошла ошибка при загрузке...</h1>}
+            {application && <EditApplicationForm application={application}/>}
         </Container>
     );
 };
