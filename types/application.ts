@@ -4,7 +4,7 @@ import {Reward} from "@/types/reward";
 import {Document} from "@/types/document";
 
 interface Application extends AuditableEntity {
-    candidateId:number,
+    candidateId: number,
     candidate: Candidate,
     rewardId: number,
     reward: Reward,

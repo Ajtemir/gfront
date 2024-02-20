@@ -1,7 +1,12 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {backendUrl} from "@/env-variables";
-import {EndpointBuilder} from "@reduxjs/toolkit/query/react";
+import {createApi, EndpointBuilder, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {Application} from "@/types/application";
+
+export interface UpdateDocumentArgument {
+    documentId: number
+    file?: string
+    fileName?: string
+}
 
 export const documentApi = createApi({
     reducerPath: 'documentAPI',
@@ -11,12 +16,13 @@ export const documentApi = createApi({
 
     endpoints:(build) => ({
 
-        updateDocument : build.query<Application[], number>({
-            query : (applicationId: number)=> {
+        updateDocument : build.mutation<void, UpdateDocumentArgument>({
+            query : (updateDocumentArgument)=> {
                 return {
-                    url:'documents',
-                    params: {
-                        applicationId: applicationId,
+                    url:`documents/update`,
+                    method: 'POST',
+                    body: {
+                        ...updateDocumentArgument
                     },
                 }
             },
@@ -26,4 +32,5 @@ export const documentApi = createApi({
 })
 
 export const {
+    useUpdateDocumentMutation
 } = documentApi

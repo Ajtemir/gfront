@@ -21,7 +21,11 @@ import {ProgressLink as Link} from "@/components/progress-link";
 import {Eye} from "@/icons/eye";
 import {XCircle} from "@/icons/x-circle";
 import PdfViewer from '../Documents/PdfViewer';
-import Document from "@/types/document"
+import {Document} from "@/types/document"
+import {Upload, UploadFile} from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
+import {fileToBase64} from "@/utils/file-to-base64";
+import {UpdateDocumentArgument, useUpdateDocumentMutation} from "@/backend-api/document-api";
 
 
 interface DocumentProps {
@@ -35,6 +39,7 @@ export const EditApplicationForm = ({children, application} : Props) => {
     const [documentState, setDocument] = useState<Document>(null)
     const initialValues = application
     const [updateApplication, {isLoading, error}] = useUpdateApplicationMutation()
+    const [updateDocument, {isLoading: updateIsLoading, error: UpdateDocument}] = useUpdateDocumentMutation()
     return (
         <Box
             component='form'
@@ -85,11 +90,24 @@ export const EditApplicationForm = ({children, application} : Props) => {
                                                     : <Typography style={{color: 'green'}} display={"inline"}>(Опциональный)</Typography>
                                                 }
                                             </h3>
-                                            <ButtonGroup variant='contained'>
-                                                <Button startIcon={<PencilIcon fontSize='small' />} color={"success"}>
 
-                                                    {document.name ? t('Replace') : t('Upload')}
-                                                </Button>
+                                            <ButtonGroup variant='contained'>
+                                                {
+                                                        <Button startIcon={<PencilIcon fontSize='small' />} color={"success"} component="label">
+                                                            {document.name ? t('Replace') : t('Upload')}
+                                                            <Input type="file" style={{display:"none"}}
+                                                                   onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                                                                       const argument = {
+                                                                           documentId : document.id,
+                                                                           file : await fileToBase64(e.target.files[0]) as string,
+                                                                           fileName : e.target.files[0].name,
+                                                                       } as UpdateDocumentArgument
+                                                                       updateDocument(argument)
+
+                                                                   }}/>
+                                                        </Button>
+                                                }
+
                                                 {
                                                     document.name &&
                                                     <Button startIcon={<Eye fontSize='small' />} onClick={(e) => {setDocument(document)}}>
@@ -97,7 +115,12 @@ export const EditApplicationForm = ({children, application} : Props) => {
                                                     </Button>
                                                 }
                                                 {!document.isRequired &&
-                                                    <Button startIcon={<XCircle fontSize='small' />} color={'error'}>
+                                                    <Button startIcon={<XCircle fontSize='small' />} color={'error'} onClick={async (e) => {
+                                                        const argument = {
+                                                            documentId : document.id,
+                                                        } as UpdateDocumentArgument
+                                                        updateDocument(argument)
+                                                    }}>
                                                         {t('Delete')}
                                                     </Button>
                                                 }

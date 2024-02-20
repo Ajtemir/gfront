@@ -8,6 +8,7 @@ interface CandidateWithoutImage extends AuditableEntity {
 
 interface Candidate extends AuditableEntity {
   candidateType: CandidateType;
+  candidateTypeId: string;
   image: string | null;
   imageName: string | null;
 }

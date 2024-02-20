@@ -3,7 +3,7 @@ import {backendUrl} from "@/env-variables";
 import {Application} from "@/types/application";
 
 export const applicationApi = createApi({
-    reducerPath: 'userAPI',
+    reducerPath: 'applicationAPI',
     baseQuery: fetchBaseQuery({
         baseUrl: backendUrl
     }),
@@ -23,14 +23,32 @@ export const applicationApi = createApi({
             })
         }),
 
-
+        getApplications : build.query<GetApplicationsResult, {pageNumber:number, pageSize:number}>({
+            query: (pagination) => ({
+                url: '/applications',
+                params: {
+                    ...pagination
+                }
+            })
+        }),
 
     })
 })
 
+
+export interface GetApplicationsResult{
+    items:Application[]
+    totalCount:number
+    pageNumber: number
+    totalPages:number
+    hasPreviousPage:boolean
+    hasNextPage:boolean
+}
+
 export const {
     useGetApplicationByIdQuery,
     useUpdateApplicationMutation,
+    useGetApplicationsQuery,
 } = applicationApi
 
 
