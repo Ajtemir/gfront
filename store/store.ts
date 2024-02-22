@@ -4,12 +4,15 @@ import {combineReducers} from "redux";
 import {applicationApi} from "@/backend-api/application-api";
 import {noteSlice} from "@/store/reducers/testReducer";
 import {documentApi} from "@/backend-api/document-api";
+import {rewardApi} from "@/backend-api/reward-api";
 
 const rootReducer = combineReducers({
     [applicationApi.reducerPath]: applicationApi.reducer,
     [documentApi.reducerPath]: documentApi.reducer,
+    [rewardApi.reducerPath]: rewardApi.reducer,
     [noteSlice.reducerPath]: noteSlice.reducer,
 })
+
 export const store =
     configureStore({
         reducer: rootReducer,
@@ -17,6 +20,7 @@ export const store =
             return getDefaultMiddleware()
                 .concat(applicationApi.middleware)
                 .concat(documentApi.middleware)
+                .concat(rewardApi.middleware)
                 ;
         }
     })

@@ -16,7 +16,11 @@ import {FormikTextField} from "@/components/formik-text-field";
 import {nameof} from "@/utils/nameof";
 import {UpdateCitizenDetails} from "@/types/citizen";
 import {Genders} from "@/types/gender";
-import {useRewardsCandidateId} from "@/backend-api/reward-api";
+import {
+    useGetRewardsByCandidateIdQuery,
+    useGetRewardsByCandidateTypeIdQuery,
+    useRewardsCandidateId
+} from "@/backend-api/reward-api";
 import {SubmitButton} from "@/components/buttons/submit-button";
 import {translateYupError} from "@/components/formik-interface";
 import {Reward} from "@/types/reward";
@@ -79,7 +83,7 @@ const CreateApplicationForm = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const candidateId = parseInt(searchParams.get('candidateId')!)
-    const {data, error, isLoading} = useRewardsCandidateId(candidateId)
+    const {data, error, isLoading} = useGetRewardsByCandidateIdQuery(candidateId)
     if(candidateId) {
         initialValues.candidateId = candidateId;
     }
@@ -149,7 +153,7 @@ const CreateApplicationForm = () => {
                                 </MenuItem>
                                 {data.map(reward => (
                                     <MenuItem key={reward.id} value={reward.id}>
-                                        {t(reward.nameRu)}
+                                        {reward.nameRu}
                                     </MenuItem>
                                 ))}
                             </FormikTextField>}
@@ -163,7 +167,6 @@ const CreateApplicationForm = () => {
                                 fullWidth={true}
                                 multiline={true}
                                 rows={10}
-                                // inputProps={{ minLength: 2 }}
                                 labelRequired
                             />
                         </Grid>

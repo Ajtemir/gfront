@@ -27,7 +27,7 @@ import {Reward} from "@/types/reward";
 import {PencilIconButton} from "@/components/buttons/pencil-icon-button";
 import {ArrowRightIconButton} from "@/components/buttons/arrow-right-icon-button";
 
-export const RowSkeleton = ({colSpan}: {colSpan: number}) => (
+const RowSkeleton = ({colSpan}: {colSpan: number}) => (
   <tr>
     <td colSpan={colSpan}>
       <Skeleton variant='text' height='45px'/>

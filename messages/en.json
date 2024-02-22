@@ -133,5 +133,10 @@
   "Log out": "Log out",
   "Copyright": "© {date} State Enterprise \"Infocom\".",
   "Create a application": "Create a application",
-  "Applications": "Applications"
+  "Applications": "Applications",
+  "Go to candidate's detail": "Go to candidate's detail",
+  "Upload": "Upload",
+  "Replace": "Replace",
+  "Delete": "Delete",
+  "View": "View"
 }

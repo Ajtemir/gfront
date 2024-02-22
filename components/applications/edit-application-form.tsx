@@ -2,7 +2,19 @@
 
 import React, {useState} from 'react';
 import {useTranslations} from "next-intl";
-import {Box, Button, ButtonGroup, Card, CardContent, CardHeader, Divider, Input, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Card,
+    CardContent,
+    CardHeader,
+    Divider,
+    Input,
+    MenuItem,
+    TextField,
+    Typography
+} from "@mui/material";
 import Chip from '@mui/material/Chip';
 import Grid from "@mui/material/Unstable_Grid2";
 import {FormikTextField} from "@/components/formik-text-field";
@@ -12,7 +24,7 @@ import {ImageUploader} from "@/components/image-uploader";
 import {megabytesToBytes} from "@/utils/megabytes-to-bytes";
 import {SubmitButton} from "@/components/buttons/submit-button";
 import {useFormik} from "formik";
-import {UpdateRewardSchema} from "@/schemas";
+import {UpdateEntityDetailsSchema, UpdateRewardSchema} from "@/schemas";
 import toast from "react-hot-toast";
 import {Application} from "@/types/application";
 import {useUpdateApplicationMutation} from "@/backend-api/application-api";
@@ -26,6 +38,12 @@ import {Upload, UploadFile} from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import {fileToBase64} from "@/utils/file-to-base64";
 import {UpdateDocumentArgument, useUpdateDocumentMutation} from "@/backend-api/document-api";
+import {UpdateEntityDetails} from "@/types/entity";
+import {formatYupError} from "@/utils/format-yup-error";
+import {useRewardsCandidateId} from "@/backend-api/reward-api";
+import {ArrowLeft as ArrowLeftIcon} from "@/icons/arrow-left";
+import {ArrowRight} from "@/icons/arrow-right";
+import {Plus as PlusIcon} from "@/icons/plus";
 
 
 interface DocumentProps {
@@ -36,10 +54,29 @@ interface DocumentProps {
 }
 export const EditApplicationForm = ({children, application} : Props) => {
     const t = useTranslations()
-    const [documentState, setDocument] = useState<Document>(null)
+    const [documentState, setDocument] = React.useState<Document | null>(null)
     const initialValues = application
     const [updateApplication, {isLoading, error}] = useUpdateApplicationMutation()
     const [updateDocument, {isLoading: updateIsLoading, error: UpdateDocument}] = useUpdateDocumentMutation()
+    const {data:rewards, error:rewardsError, isLoading: rewardIsLoading} = useRewardsCandidateId(application.candidateId)
+    const formik = useFormik({
+        initialValues: initialValues,
+        // validationSchema: UpdateEntityDetailsSchema,
+        onSubmit: async (values) => {
+            const tryUpdateEntity = async () => {
+                await updateApplication(values)
+            }
+
+            await toast.promise(tryUpdateEntity(), {
+                loading: t('Pending'),
+                success: t('Success'),
+                error: (err) => {
+                    console.error(formatYupError(err))
+                    return t('Failed')
+                }
+            })
+        }
+    })
     return (
         <Box
             component='form'
@@ -53,7 +90,35 @@ export const EditApplicationForm = ({children, application} : Props) => {
                         spacing={3}
                     >
                         <Grid md={6} xs={12}>
-
+                            <FormikTextField
+                                name={nameof<Application>('id')}
+                                label='Identifier'
+                                formik={formik}
+                                labelRequired
+                                disabled={true}
+                            />
+                        </Grid>
+                        <Grid md={6} xs={12}>
+                            <TextField
+                                label='Reward Name'
+                                InputLabelProps={{required: true}}
+                                disabled={true}
+                                value={application.reward.nameRu}
+                                fullWidth={true}
+                            />
+                        </Grid>
+                        <Grid md={6} xs={12}>
+                            <TextField
+                                label='Candidate Identifier'
+                                InputLabelProps={{required: true}}
+                                disabled={true}
+                                value={application.candidateId}
+                            />
+                            <Link href={`/candidates/${application.candidateId}`}>
+                                <Button startIcon={<ArrowRight fontSize='small'/>}>
+                                    {t("Go to candidate's detail")}
+                                </Button>
+                            </Link>
                         </Grid>
                     </Grid>
                 </CardContent>
@@ -64,7 +129,23 @@ export const EditApplicationForm = ({children, application} : Props) => {
                         <SubmitButton color='success'>
                             {('Save')}
                         </SubmitButton>
+                        <SubmitButton color='error'>
+                            {('Delete')}
+                        </SubmitButton>
                     </ButtonGroup>
+                </CardContent>
+            </Card>
+
+            <Card sx={{mt: 3}}>
+                <CardHeader title={('Statuses')}/>
+                <Divider/>
+                <CardContent>
+                    <Grid
+                        container
+                        spacing={3}
+                    >
+
+                    </Grid>
                 </CardContent>
             </Card>
 
@@ -99,8 +180,8 @@ export const EditApplicationForm = ({children, application} : Props) => {
                                                                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                                                                        const argument = {
                                                                            documentId : document.id,
-                                                                           file : await fileToBase64(e.target.files[0]) as string,
-                                                                           fileName : e.target.files[0].name,
+                                                                           file : await fileToBase64(e.target.files![0]) as string,
+                                                                           fileName : e.target.files![0].name,
                                                                        } as UpdateDocumentArgument
                                                                        updateDocument(argument)
 
@@ -139,7 +220,7 @@ export const EditApplicationForm = ({children, application} : Props) => {
 
                 </CardContent>
             </Card>
-            <PdfViewer document={documentState}/>
+            <PdfViewer document={documentState!}/>
         </Box>
     )
 }

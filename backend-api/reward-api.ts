@@ -4,6 +4,32 @@ import { RewardArraySchema, RewardSchema } from "@/schemas";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { minutesToMilliseconds } from "date-fns";
 import {backendUrl} from "@/env-variables";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+
+
+export const rewardApi = createApi({
+    reducerPath: 'rewardAPI',
+    baseQuery: fetchBaseQuery({
+        baseUrl: backendUrl
+    }),
+    endpoints: (build) => ({
+
+        getRewardsByCandidateId : build.query<Reward[], number>({
+            query: (candidateId) => ({
+                url: '/rewards/GetRewardsByCandidateId',
+                params: {
+                    candidateId: candidateId,
+                }
+            })
+        }),
+
+    })
+})
+
+export const {
+    // useGetRewardsByCandidateTypeIdQuery,
+    useGetRewardsByCandidateIdQuery,
+} = rewardApi
 
 const baseUrl = `${backendUrl}/rewards`;
 

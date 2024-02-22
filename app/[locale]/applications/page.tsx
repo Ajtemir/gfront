@@ -2,14 +2,19 @@
 import Candidates from "@/components/candidates";
 import React from "react";
 import Applications from "@/components/applications/applications";
-import {Box, Button, ButtonGroup, Container, Typography, TablePagination} from "@mui/material";
+import {Box, Button, ButtonGroup, Container, Typography, TablePagination, Skeleton} from "@mui/material";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {Plus as PlusIcon} from "@/icons/plus";
 import {AuthGuard} from "@/components/auth-guard";
 import {useTranslations} from "next-intl";
 import {useGetApplicationsQuery} from "@/backend-api/application-api";
-import { RowSkeleton } from "../rewards/page";
-
+const RowSkeleton = ({colSpan}: {colSpan: number}) => (
+    <tr>
+        <td colSpan={colSpan}>
+            <Skeleton variant='text' height='45px'/>
+        </td>
+    </tr>
+)
 const ApplicationPage = () => {
 
     const [page, setPage] = React.useState(0);

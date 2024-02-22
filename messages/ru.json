@@ -133,5 +133,10 @@
   "Log out": "Выйти",
   "Copyright": "© {date} Государственное предприятие \"Инфоком\".",
   "Create a application": "Создать заявление",
-  "Applications": "Заявления"
+  "Applications": "Заявления",
+  "Go to candidate's detail": "Перейти к деталям кандидата",
+  "Upload": "Загрузить",
+  "Replace": "Заменить",
+  "Delete": "Удалить",
+  "View": "Посмотреть"
 }
