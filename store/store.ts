@@ -5,11 +5,13 @@ import {applicationApi} from "@/backend-api/application-api";
 import {noteSlice} from "@/store/reducers/testReducer";
 import {documentApi} from "@/backend-api/document-api";
 import {rewardApi} from "@/backend-api/reward-api";
+import {documentViewSlice} from "@/store/reducers/documentViewReducer";
 
 const rootReducer = combineReducers({
     [applicationApi.reducerPath]: applicationApi.reducer,
     [documentApi.reducerPath]: documentApi.reducer,
     [rewardApi.reducerPath]: rewardApi.reducer,
+    [documentViewSlice.reducerPath]: documentViewSlice.reducer,
     [noteSlice.reducerPath]: noteSlice.reducer,
 })
 
@@ -24,15 +26,7 @@ export const store =
                 ;
         }
     })
-//     configureStore({
-//     reducer: {
-//         [applicationApi.reducerPath]: applicationApi.reducer,
-//         noteReducer
-//     },
-//     middleware: (getDefaultMiddleware) => getDefaultMiddleware()
-//         .concat(applicationApi.middleware)
-//
-// });
+
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

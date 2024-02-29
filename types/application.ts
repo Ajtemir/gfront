@@ -9,6 +9,7 @@ interface Application extends AuditableEntity {
     candidate: Candidate,
     rewardId: number,
     reward: Reward,
+    specialAchievements: string,
     documents: Document[]
     statuses: Status[]
 }

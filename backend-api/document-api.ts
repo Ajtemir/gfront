@@ -1,6 +1,6 @@
 import {backendUrl} from "@/env-variables";
 import {createApi, EndpointBuilder, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {Application} from "@/types/application";
+import {Document} from "@/types/document";
 
 export interface UpdateDocumentArgument {
     documentId: number
@@ -16,7 +16,7 @@ export const documentApi = createApi({
 
     endpoints:(build) => ({
 
-        updateDocument : build.mutation<void, UpdateDocumentArgument>({
+        updateDocument : build.mutation<Document, UpdateDocumentArgument>({
             query : (updateDocumentArgument)=> {
                 return {
                     url:`documents/update`,

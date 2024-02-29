@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useState} from 'react';
-import {useTranslations} from "next-intl";
+import {useFormatter, useTranslations} from "next-intl";
 import {
     Box,
     Button,
@@ -11,7 +11,11 @@ import {
     CardHeader,
     Divider,
     Input,
-    MenuItem,
+    MenuItem, Paper,
+    Table, TableBody,
+    TableCell,
+    TableContainer,
+    TableHead, TableRow,
     TextField,
     Typography
 } from "@mui/material";
@@ -57,8 +61,9 @@ export const EditApplicationForm = ({children, application} : Props) => {
     const [documentState, setDocument] = React.useState<Document | null>(null)
     const initialValues = application
     const [updateApplication, {isLoading, error}] = useUpdateApplicationMutation()
-    const [updateDocument, {isLoading: updateIsLoading, error: UpdateDocument}] = useUpdateDocumentMutation()
+    const [updateDocument, {data:updatedDocumentData, isLoading: updateIsLoading, error: updateDocumentError}] = useUpdateDocumentMutation()
     const {data:rewards, error:rewardsError, isLoading: rewardIsLoading} = useRewardsCandidateId(application.candidateId)
+    const formatter = useFormatter()
     const formik = useFormik({
         initialValues: initialValues,
         // validationSchema: UpdateEntityDetailsSchema,
@@ -77,6 +82,8 @@ export const EditApplicationForm = ({children, application} : Props) => {
             })
         }
     })
+
+    console.log(application.specialAchievements)
     return (
         <Box
             component='form'
@@ -120,6 +127,17 @@ export const EditApplicationForm = ({children, application} : Props) => {
                                 </Button>
                             </Link>
                         </Grid>
+
+                        <Grid md={6} xs={12}>
+                            <TextField
+                                value={application.specialAchievements}
+                                label='Special Achievements'
+                                fullWidth={true}
+                                multiline={true}
+                                rows={10}
+                                InputLabelProps={{required: true}}
+                            />
+                        </Grid>
                     </Grid>
                 </CardContent>
             </Card>
@@ -144,7 +162,35 @@ export const EditApplicationForm = ({children, application} : Props) => {
                         container
                         spacing={3}
                     >
-
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Status Identifier</TableCell>
+                                        <TableCell align="left">Status Name</TableCell>
+                                        <TableCell align="left">Office</TableCell>
+                                        <TableCell align="left">User</TableCell>
+                                        <TableCell align="left">Change Date</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {application.statuses.map((status) => (
+                                        <TableRow
+                                            key={status.id}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {status.id}
+                                            </TableCell>
+                                            <TableCell align="left">{status.statusName}</TableCell>
+                                            <TableCell align="left">{status.office.nameRu}({status.office.id})</TableCell>
+                                            <TableCell align="left">{status.user.userName}({status.user.id})</TableCell>
+                                            <TableCell align="left">{formatter.dateTime(new Date(status.changeTime))}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Grid>
                 </CardContent>
             </Card>
@@ -167,11 +213,10 @@ export const EditApplicationForm = ({children, application} : Props) => {
                                                 {document.id}
                                                 {
                                                     document.isRequired
-                                                    ? <Typography style={{color: 'red'}} display={"inline"}>(*Обьязательный)</Typography>
-                                                    : <Typography style={{color: 'green'}} display={"inline"}>(Опциональный)</Typography>
+                                                    ? <Typography style={{color: 'red'}} display={"inline"}> (*Обьязательный)</Typography>
+                                                    : <Typography style={{color: 'green'}} display={"inline"}> (Опциональный)</Typography>
                                                 }
                                             </h3>
-
                                             <ButtonGroup variant='contained'>
                                                 {
                                                         <Button startIcon={<PencilIcon fontSize='small' />} color={"success"} component="label">
@@ -183,8 +228,8 @@ export const EditApplicationForm = ({children, application} : Props) => {
                                                                            file : await fileToBase64(e.target.files![0]) as string,
                                                                            fileName : e.target.files![0].name,
                                                                        } as UpdateDocumentArgument
-                                                                       updateDocument(argument)
-
+                                                                       const doc = await updateDocument(argument).unwrap()
+                                                                       document = doc
                                                                    }}/>
                                                         </Button>
                                                 }
@@ -195,7 +240,7 @@ export const EditApplicationForm = ({children, application} : Props) => {
                                                         {t('View')}
                                                     </Button>
                                                 }
-                                                {!document.isRequired &&
+                                                {document.name && !document.isRequired &&
                                                     <Button startIcon={<XCircle fontSize='small' />} color={'error'} onClick={async (e) => {
                                                         const argument = {
                                                             documentId : document.id,

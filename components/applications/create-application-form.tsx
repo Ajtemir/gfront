@@ -18,7 +18,6 @@ import {UpdateCitizenDetails} from "@/types/citizen";
 import {Genders} from "@/types/gender";
 import {
     useGetRewardsByCandidateIdQuery,
-    useGetRewardsByCandidateTypeIdQuery,
     useRewardsCandidateId
 } from "@/backend-api/reward-api";
 import {SubmitButton} from "@/components/buttons/submit-button";
