@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, {useEffect} from 'react';
 import {applicationApi, useGetApplicationByIdQuery, useUpdateApplicationMutation} from "@/backend-api/application-api";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {removeNote} from "@/store/reducers/testReducer"
@@ -19,8 +19,8 @@ const EditApplicationPage = ({params}: {
     const {data:application, isLoading, error} = useGetApplicationByIdQuery(params.applicationId)
     console.log(application)
     const {notes} = useAppSelector(state => state.note)
-    const dispatch = useAppDispatch();
     const [updateApplication] = applicationApi.useUpdateApplicationMutation();
+    const dispatch = useAppDispatch();
 
     return (
         <Container maxWidth='md'>

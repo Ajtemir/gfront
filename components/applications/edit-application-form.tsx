@@ -48,6 +48,7 @@ import {useRewardsCandidateId} from "@/backend-api/reward-api";
 import {ArrowLeft as ArrowLeftIcon} from "@/icons/arrow-left";
 import {ArrowRight} from "@/icons/arrow-right";
 import {Plus as PlusIcon} from "@/icons/plus";
+import DocumentList from "@/components/Documents/DocumentList";
 
 
 interface DocumentProps {
@@ -204,68 +205,12 @@ export const EditApplicationForm = ({children, application} : Props) => {
                         container
                         spacing={3}
                     >
-                        {application.documents.map((document) =>
-                            (
-                                <>
-                                    <Grid md={6} xs={12}>
-                                        <CardContent sx={{justifyContent: "space-between", display: "flex"}}>
-                                            <h3 style={{display:"flex"}}>
-                                                {document.id}
-                                                {
-                                                    document.isRequired
-                                                    ? <Typography style={{color: 'red'}} display={"inline"}> (*Обьязательный)</Typography>
-                                                    : <Typography style={{color: 'green'}} display={"inline"}> (Опциональный)</Typography>
-                                                }
-                                            </h3>
-                                            <ButtonGroup variant='contained'>
-                                                {
-                                                        <Button startIcon={<PencilIcon fontSize='small' />} color={"success"} component="label">
-                                                            {document.name ? t('Replace') : t('Upload')}
-                                                            <Input type="file" style={{display:"none"}}
-                                                                   onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
-                                                                       const argument = {
-                                                                           documentId : document.id,
-                                                                           file : await fileToBase64(e.target.files![0]) as string,
-                                                                           fileName : e.target.files![0].name,
-                                                                       } as UpdateDocumentArgument
-                                                                       const doc = await updateDocument(argument).unwrap()
-                                                                       document = doc
-                                                                   }}/>
-                                                        </Button>
-                                                }
-
-                                                {
-                                                    document.name &&
-                                                    <Button startIcon={<Eye fontSize='small' />} onClick={(e) => {setDocument(document)}}>
-                                                        {t('View')}
-                                                    </Button>
-                                                }
-                                                {document.name && !document.isRequired &&
-                                                    <Button startIcon={<XCircle fontSize='small' />} color={'error'} onClick={async (e) => {
-                                                        const argument = {
-                                                            documentId : document.id,
-                                                        } as UpdateDocumentArgument
-                                                        updateDocument(argument)
-                                                    }}>
-                                                        {t('Delete')}
-                                                    </Button>
-                                                }
-                                            </ButtonGroup>
-                                        </CardContent>
-                                    </Grid>
-                                    <Grid md={6} xs={12}>
-                                        <CardContent sx={{justifyContent: "space-between", display: "flex"}}>
-                                            <header>{document.documentTypeName}</header>
-                                        </CardContent>
-                                    </Grid>
-                                </>
-                            )
-                        )}
+                        <DocumentList documents={application.documents}/>
                     </Grid>
 
                 </CardContent>
             </Card>
-            <PdfViewer document={documentState!}/>
+            <PdfViewer/>
         </Box>
     )
 }

@@ -8,12 +8,15 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import React from 'react';
 import {LoaderIcon} from "react-hot-toast";
 import {Document} from "@/types/document";
+import {useAppSelector} from "@/store/store";
+import {selectDocumentView} from "@/store/reducers/documentViewReducer";
 
 interface PdfViewerProps{
     url?:string
     document?: Document
 }
-const PdfViewer = ({url = 'https://localhost:44350/documents/1', document}:PdfViewerProps) => {
+const PdfViewer = () => {
+    const {document} = useAppSelector(selectDocumentView)
     if(!document)return null;
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
     return <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
