@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, ButtonGroup, Card, CardContent, Dialog, Input, Typography} from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import {Pencil as PencilIcon} from "@/icons/pencil";
@@ -20,18 +20,15 @@ const DocumentItem = ({document}: DocumentItemProps) => {
     const [updateDocument] = useUpdateDocumentMutation()
     const t = useTranslations()
     const dispatch = useAppDispatch();
-    console.log(dispatch)
-    const setDocumentState = (document: Document) => {
-        dispatch(setDocument(document))
-    }
+    const [documentState, setDocumentState] = useState<Document>(document)
     return (
         <>
             <Grid md={6} xs={12}>
                 <CardContent sx={{justifyContent: "space-between", display: "flex"}}>
                     <h3 style={{display: "flex"}}>
-                        {document.id}
+                        {documentState.id}
                         {
-                            document.isRequired
+                            documentState.isRequired
                                 ? <Typography style={{color: 'red'}} display={"inline"}> (*Обьязательный)</Typography>
                                 : <Typography style={{color: 'green'}} display={"inline"}> (Опциональный)</Typography>
                         }
@@ -39,7 +36,7 @@ const DocumentItem = ({document}: DocumentItemProps) => {
                     <ButtonGroup variant='contained'>
                         {
                             <Button startIcon={<PencilIcon fontSize='small'/>} color={"success"} component="label">
-                                {document.name ? t('Replace') : t('Upload')}
+                                {documentState.name ? t('Replace') : t('Upload')}
                                 <Input type="file" style={{display: "none"}}
                                        onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                                            const argument = {
@@ -48,25 +45,27 @@ const DocumentItem = ({document}: DocumentItemProps) => {
                                                fileName: e.target.files![0].name,
                                            } as UpdateDocumentArgument
                                            const updatedDocument = await updateDocument(argument).unwrap()
+                                           setDocumentState(updatedDocument)
                                            setDocument(updatedDocument)
                                        }}/>
                             </Button>
                         }
 
                         {
-                            document.name &&
+                            documentState.name &&
                                 <Button startIcon={<Eye fontSize='small'/>} onClick={(e) => {
-                                    setDocumentState(document)
+                                    dispatch(setDocument(documentState))
                                 }}>
                                     {t('View')}
                                 </Button>
                         }
-                        {document.name && !document.isRequired &&
+                        {documentState.name && !documentState.isRequired &&
                             <Button startIcon={<XCircle fontSize='small'/>} color={'error'} onClick={async (e) => {
                                 const argument = {
                                     documentId: document.id,
                                 } as UpdateDocumentArgument
-                                updateDocument(argument)
+                                const deletedDocument = await updateDocument(argument).unwrap()
+                                setDocumentState(deletedDocument)
                             }}>
                                 {t('Delete')}
                             </Button>
@@ -76,7 +75,7 @@ const DocumentItem = ({document}: DocumentItemProps) => {
             </Grid>
             <Grid md={6} xs={12}>
                 <CardContent sx={{justifyContent: "space-between", display: "flex"}}>
-                    <header>{document.documentTypeName}</header>
+                    <header>{documentState.documentTypeName}</header>
                 </CardContent>
             </Grid>
         </>

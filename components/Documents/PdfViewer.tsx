@@ -17,8 +17,8 @@ interface PdfViewerProps{
 }
 const PdfViewer = () => {
     const {document} = useAppSelector(selectDocumentView)
-    if(!document)return null;
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
+    if(!document)return null;
     return <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
         <Viewer
             fileUrl= {`https://localhost:44350/documents/${document?.id}`}
