@@ -18,6 +18,7 @@ import { fileToBase64 } from "@/utils/file-to-base64";
 import { useImageUploader } from "@/hooks/use-image-uploader";
 import { megabytesToBytes } from "@/utils/megabytes-to-bytes";
 import { ImageUploader } from "@/components/image-uploader";
+import ChildrenContainer from "@/components/children/ChildrenContainer";
 
 const UpdateMotherImage = ({mother}: { mother: Mother }) => {
   const t = useTranslations()
@@ -228,7 +229,7 @@ export const UpdateMother = ({mother}: { mother: Mother }) => {
 
         </CardContent>
       </Card>
-
+      <ChildrenContainer motherId={mother.id} />
       <UpdateMotherImage mother={mother}/>
     </>
   )

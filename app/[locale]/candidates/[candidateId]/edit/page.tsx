@@ -55,7 +55,7 @@ const LoadCandidate = ({candidateId}: { candidateId: number }) => {
         return null;
     }
   }
-
+  console.log(candidate.candidateType)
   return (
     <Container maxWidth='md'>
       <Box

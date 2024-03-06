@@ -140,5 +140,10 @@
   "Delete": "Delete",
   "View": "View",
   "Application": "Application",
-  "Identifier": "Identifier"
+  "Identifier": "Identifier",
+  "Children": "Children",
+  "Add Child": "Add Child",
+  "Full name": "Full name",
+  "Go to mother": "Go to mother",
+  "Create a child": "Create a child"
 }

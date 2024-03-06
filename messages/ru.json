@@ -140,5 +140,10 @@
   "Delete": "Удалить",
   "View": "Посмотреть",
   "Application": "Заявления",
-  "Identifier": "Идентификатор"
+  "Identifier": "Идентификатор",
+  "Children": "Дети",
+  "Add Child": "Добавить ребенка",
+  "Full name": "Ф.И.О",
+  "Go to mother": "Перейти к матери",
+  "Create a child": "Создать ребенка"
 }
