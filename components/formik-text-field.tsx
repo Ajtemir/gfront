@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { FormikInterface, translateYupError } from "@/components/formik-interface";
 
 
-interface FormikTextFieldProps extends BaseTextFieldProps {
+export interface FormikTextFieldProps extends BaseTextFieldProps {
   name: string;
   label: string;
   formik: FormikInterface<any>

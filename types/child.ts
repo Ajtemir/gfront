@@ -1,10 +1,12 @@
 import {Person} from "@/types/person";
 import {Gender} from "@/types/gender";
+import {Mother} from "@/types/mother";
 
 export interface Child {
     id: number;
     pin: string
-    passportNumberAndSeries?:string
+    passportSeriesNumber?:string
+    registeredAddress:string
     firstName: string
     lastName: string
     patronymicName: string
@@ -17,4 +19,6 @@ export interface Child {
     isAdopted: boolean
     image: string | null;
     imageName: string | null;
+    motherId: number
+    mother: Mother
 }

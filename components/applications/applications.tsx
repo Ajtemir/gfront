@@ -19,7 +19,6 @@ import {PencilIconButton} from "@/components/buttons/pencil-icon-button";
 import {Plus as PlusIcon} from "@/icons/plus";
 import {useTranslations} from "next-intl";
 import {useGetApplicationsQuery} from "@/backend-api/application-api";
-import {RowSkeleton} from "@/app/[locale]/rewards/page";
 import {Application} from "@/types/application";
 
 const Applications = ({applications}:{applications: Application[]}) => {
@@ -37,16 +36,6 @@ const Applications = ({applications}:{applications: Application[]}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/*{isLoading && (*/}
-                    {/*        <>*/}
-                    {/*            <RowSkeleton colSpan={8}/>*/}
-                    {/*            <RowSkeleton colSpan={8}/>*/}
-                    {/*            <RowSkeleton colSpan={8}/>*/}
-                    {/*            <RowSkeleton colSpan={8}/>*/}
-                    {/*            <RowSkeleton colSpan={8}/>*/}
-                    {/*        </>*/}
-                    {/*    )*/}
-                    {/*}*/}
                     {applications &&
                         applications.map(application => (
                             <TableRow key={application.id}>

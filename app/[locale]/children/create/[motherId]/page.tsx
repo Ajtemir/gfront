@@ -37,7 +37,7 @@ const CreateChild = ({params}: {
                 </Link>
             </Box>
 
-            <CreateChildForm/>
+            <CreateChildForm motherId={params.motherId}/>
 
 
 

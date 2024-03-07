@@ -12,7 +12,7 @@ function formatDate(dateValue: string | Date) {
     : new Date(dateValue)
 }
 
-interface FormikDatePickerProps {
+export interface FormikDatePickerProps {
   name: string;
   label: string;
   formik: FormikInterface<any>

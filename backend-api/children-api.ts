@@ -18,7 +18,20 @@ export const childrenApi = createApi({
             })
         }),
 
+        addChildToMother : build.mutation<number, Child>({
+            query: (child: Child) => ({
+                url: '/Children/Create',
+                body:{
+                    ...child
+                },
+                method: 'POST'
+            })
+        })
+
     })
 })
 
-export const {useGetChildrenByMotherIdQuery} = childrenApi
+export const {
+    useGetChildrenByMotherIdQuery,
+    useAddChildToMotherMutation,
+} = childrenApi

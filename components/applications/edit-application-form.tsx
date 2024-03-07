@@ -84,7 +84,6 @@ export const EditApplicationForm = ({children, application} : Props) => {
         }
     })
 
-    console.log(application.specialAchievements)
     return (
         <Box
             component='form'
