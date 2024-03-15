@@ -1,4 +1,5 @@
 import { Candidate } from "@/types/candidate";
+import {Person} from "@/types/person";
 
 interface Mother extends Candidate {
   lastName: string;
@@ -10,6 +11,7 @@ interface Mother extends Candidate {
   deathDate: Date | null;
   registeredAddress: string;
   actualAddress: string | null;
+  person: Person;
 }
 
 interface CreateMother {

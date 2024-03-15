@@ -85,6 +85,15 @@ const LoadCandidate = ({candidateId}: { candidateId: number }) => {
               </Button>
             </ButtonGroup>
           </Link>
+
+          <Link href={`/applications/${candidate.applicationId}/edit`} tabIndex={-1}>
+            <ButtonGroup variant='contained' sx={{ml: 1}}>
+              <Button startIcon={<InformationCircleOutlinedIcon fontSize='small'/>}>
+                {t('Go back to application')}
+              </Button>
+            </ButtonGroup>
+          </Link>
+
         </div>
       </Box>
 

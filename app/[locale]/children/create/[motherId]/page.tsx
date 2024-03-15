@@ -25,7 +25,7 @@ const CreateChild = ({params}: {
                 mb={3}
             >
                 <Typography variant='h4'>
-                    {t('Create a child')}
+                    {t('create a child')}
                 </Typography>
 
                 <Link href={`/candidates/${params.motherId}/edit`}>

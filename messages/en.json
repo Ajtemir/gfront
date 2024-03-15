@@ -150,5 +150,9 @@
   "Reward name": "Reward name",
   "Candidate id": "Candidate id",
   "Yes": "Yes",
-  "No": "No"
+  "No": "No",
+  "Members": "Members",
+  "Create a member": "Create a member",
+  "Go to person detail": "Go to person detail",
+  "Go back to application": "Go back to application"
 }

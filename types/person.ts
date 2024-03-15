@@ -1,14 +1,18 @@
 import {Candidate} from "@/types/candidate";
 import {Gender} from "@/types/gender";
 
-export interface Person extends Candidate {
-    firstName: string
-    lastName: string
-    patronymicName: string
-    gender: Gender
+export interface Person {
+    id: number
     birthDate: Date
     deathDate?: Date
-    birthPlace?: string
-    studyPlace?: string
-    workPlace?: string
+    firstName: string
+    lastName: string
+    patronymicName?: string
+    fullName?: string
+    gender: Gender
+    passportNumber?: string
+    passportSeries?: string
+    pin?: string
+    registeredAddress?: string
+    actualAddress?: string
 }

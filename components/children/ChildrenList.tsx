@@ -3,9 +3,10 @@ import {Child} from "@/types/child";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import {useTranslations} from "next-intl";
 import ChildItem from "@/components/children/ChildItem";
+import {ChildListItem} from "@/types/childListItem";
 
 export interface ChildrenListProps{
-    motherChildren: Child[]
+    motherChildren: ChildListItem[]
 }
 const ChildrenList = ({motherChildren}:ChildrenListProps) => {
     const t = useTranslations()

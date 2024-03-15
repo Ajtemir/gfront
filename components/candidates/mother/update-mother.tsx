@@ -19,6 +19,7 @@ import { useImageUploader } from "@/hooks/use-image-uploader";
 import { megabytesToBytes } from "@/utils/megabytes-to-bytes";
 import { ImageUploader } from "@/components/image-uploader";
 import ChildrenContainer from "@/components/children/ChildrenContainer";
+import PersonDetailView from "@/components/person/PersonDetailView";
 
 const UpdateMotherImage = ({mother}: { mother: Mother }) => {
   const t = useTranslations()
@@ -132,7 +133,9 @@ export const UpdateMother = ({mother}: { mother: Mother }) => {
 
   return (
     <>
-      <Card>
+      <PersonDetailView person={mother.person}/>
+
+      <Card sx={{mt:3}}>
         <CardHeader title={t('Basic details')}/>
         <Divider/>
         <CardContent>
@@ -172,47 +175,6 @@ export const UpdateMother = ({mother}: { mother: Mother }) => {
               <FormikTextField
                 name={nameof<UpdateMotherDetails>('pin')}
                 label={'Pin'}
-                formik={formik}
-                labelRequired
-              />
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormikTextField
-                name={nameof<UpdateMotherDetails>('passportNumber')}
-                label={'Passport number'}
-                formik={formik}
-                labelRequired
-              />
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormikTextField
-                name={nameof<UpdateMotherDetails>('registeredAddress')}
-                label={'Registered address'}
-                formik={formik}
-                labelRequired
-              />
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormikTextField
-                name={nameof<UpdateMotherDetails>('actualAddress')}
-                label={'Actual address'}
-                formik={formik}
-                labelRequired
-              />
-            </Grid>
-
-            <Grid md={6} xs={12}>
-              <FormikDatePicker
-                name={nameof<UpdateMotherDetails>('birthDate')}
-                label='Birth date'
-                formik={formik}
-                labelRequired
-              />
-            </Grid>
-            <Grid md={6} xs={12}>
-              <FormikDatePicker
-                name={nameof<UpdateMotherDetails>('deathDate')}
-                label='Death date'
                 formik={formik}
                 labelRequired
               />

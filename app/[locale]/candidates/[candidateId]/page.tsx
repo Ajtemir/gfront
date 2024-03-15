@@ -30,6 +30,7 @@ import { Mother } from "@/types/mother";
 import { Gender } from "@/types/gender";
 import { SxProps } from "@mui/material/styles";
 import { Citizen } from "@/types/citizen";
+import PersonDetailView from "@/components/person/PersonDetailView";
 
 const CandidateImageCard = ({image, sx} : {image: string | null, sx?: SxProps}) => {
   const t = useTranslations()

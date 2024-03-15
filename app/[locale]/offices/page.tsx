@@ -91,7 +91,7 @@ const OfficesPage = () => {
         <Link href='/offices/create'>
           <ButtonGroup variant='contained'>
             <Button startIcon={<PlusIcon fontSize='small'/>}>
-              {t('Create an office')}
+              {t('create an office')}
             </Button>
           </ButtonGroup>
         </Link>

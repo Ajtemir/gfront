@@ -29,7 +29,7 @@ const CreateApplication = () => {
                 mb={3}
             >
                 <Typography variant='h4'>
-                    {t('Create a application')}
+                    {t('create a application')}
                 </Typography>
 
                 <Link href='/applications'>

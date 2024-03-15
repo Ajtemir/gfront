@@ -1,6 +1,7 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {backendUrl} from "@/env-variables";
 import {Child} from "@/types/child";
+import {ChildListItem} from "@/types/childListItem";
 
 export const childrenApi = createApi({
     reducerPath: 'childrenAPI',
@@ -9,7 +10,7 @@ export const childrenApi = createApi({
     }),
     endpoints: (build) => ({
 
-        getChildrenByMotherId : build.query<Child[], number>({
+        getChildrenByMotherId : build.query<ChildListItem[], number>({
             query: (motherId) => ({
                 url: '/Children/GetChildrenByMotherId',
                 params: {

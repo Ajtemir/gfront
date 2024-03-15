@@ -11,6 +11,7 @@ interface Candidate extends AuditableEntity {
   candidateTypeId: string;
   image: string | null;
   imageName: string | null;
+  applicationId: number
 }
 
 export type {

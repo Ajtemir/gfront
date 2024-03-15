@@ -86,7 +86,7 @@ const CreateOfficePage = () => {
         mb={3}
       >
         <Typography variant='h4'>
-          {t('Create an office')}
+          {t('create an office')}
         </Typography>
 
         <Link href='/offices'>

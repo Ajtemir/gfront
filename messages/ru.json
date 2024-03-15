@@ -150,5 +150,9 @@
   "Reward name": "Название награды",
   "Candidate id": "Идентификатор кандидата",
   "Yes": "Да",
-  "No": "Нет"
+  "No": "Нет",
+  "Members": "Участники",
+  "Create a member": "Создать участника",
+  "Go to person detail": "Перейти к деталям",
+  "Go back to application": "Перейти к заявлению"
 }

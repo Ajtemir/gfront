@@ -1,20 +1,20 @@
 import React, {useState} from 'react';
-import {Child} from "@/types/child";
 import {Chip, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {ArrowRightIconButton} from "@/components/buttons/arrow-right-icon-button";
 import {PencilIconButton} from "@/components/buttons/pencil-icon-button";
 import {Plus as PlusIcon} from "@/icons/plus";
+import {ChildListItem} from "@/types/childListItem";
 
 interface ChildItemProps {
-    child: Child
+    child: ChildListItem
 }
 const ChildItem = ({child:childArgument}:ChildItemProps) => {
-    const [child, setChild] = useState<Child>(childArgument)
+    const [child, setChild] = useState<ChildListItem>(childArgument)
     return (
         <TableRow key={child.id}>
             <TableCell>{child.id}</TableCell>
-            <TableCell>{`${child.lastName} ${child.firstName} ${child.patronymicName ?? ''}`}</TableCell>
+            <TableCell>{child.fullName}</TableCell>
             <TableCell>{child.gender}</TableCell>
             <TableCell
                 style={{

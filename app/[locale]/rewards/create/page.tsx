@@ -75,7 +75,7 @@ const CreateRewardPage = () => {
         mb={3}
       >
         <Typography variant='h4'>
-          {t('Create a reward')}
+          {t('create a reward')}
         </Typography>
 
         <Link href='/rewards'>

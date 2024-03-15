@@ -39,7 +39,7 @@ const UpdateChild = ({params}:UpdateChildProps) => {
                 mb={3}
             >
                 <Typography variant='h4'>
-                    {t('Create a candidate')}
+                    {t('create a candidate')}
                 </Typography>
 
                 <Link href='/candidates'>

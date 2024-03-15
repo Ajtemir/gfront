@@ -65,6 +65,7 @@ const LinkButton = ({
 
 const Links = [
   {path: '/', alternatePath: '/candidates', label: 'Candidates', icon: <PhotographIcon fontSize='small' />},
+  {path: '/members', alternatePath: '/members', label: 'Members', icon: <PhotographIcon fontSize='small' />},
   {path: '/rewards', alternatePath: null, label: 'Rewards', icon: <StarIcon fontSize='small' />},
   {path: '/offices', alternatePath: null, label: 'Offices', icon: <OfficeBuildingIcon fontSize='small' />},
   {path: '/applications', alternatePath: null, label: 'Applications', icon: <OfficeBuildingIcon fontSize='small' />}
