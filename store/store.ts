@@ -1,13 +1,32 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore, isRejected, MiddlewareAPI} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {combineReducers} from "redux";
+import {Middleware, combineReducers} from "redux";
 import {applicationApi} from "@/backend-api/application-api";
 import {noteSlice} from "@/store/reducers/testReducer";
 import {documentApi} from "@/backend-api/document-api";
 import {rewardApi} from "@/backend-api/reward-api";
 import {documentViewSlice} from "@/store/reducers/documentViewReducer";
 import {childrenApi} from "@/backend-api/children-api";
+import {memberApi} from "@/backend-api/member-api";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import toast from "react-hot-toast";
+export const rtkQueryErrorLogger: Middleware =
+    (api: MiddlewareAPI) => (next) => (action) => {
+        if (isRejected(action)) {
+            const error = action.payload as {data:{errors?:{[field: string] : string;}, status:number, title:string, detail:string}}
+            if(error.data.detail){
+                toast.error(error.data.detail)
+            }
+            else if(error.data.errors){
+                for (let errorsKey in error.data.errors) {
+                    toast.error(error.data.errors[errorsKey])
+                    console.error(error.data.errors[errorsKey])
+                }
+            }
+        }
 
+        return next(action);
+    }
 const rootReducer = combineReducers({
     [applicationApi.reducerPath]: applicationApi.reducer,
     [documentApi.reducerPath]: documentApi.reducer,
@@ -15,6 +34,7 @@ const rootReducer = combineReducers({
     [childrenApi.reducerPath]: childrenApi.reducer,
     [documentViewSlice.reducerPath]: documentViewSlice.reducer,
     [noteSlice.reducerPath]: noteSlice.reducer,
+    [memberApi.reducerPath]: memberApi.reducer,
 })
 
 export const store =
@@ -26,6 +46,8 @@ export const store =
                 .concat(documentApi.middleware)
                 .concat(rewardApi.middleware)
                 .concat(childrenApi.middleware)
+                .concat(memberApi.middleware)
+                .concat(rtkQueryErrorLogger)
                 ;
         }
     })

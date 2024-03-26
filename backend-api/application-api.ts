@@ -23,7 +23,7 @@ export const applicationApi = createApi({
             })
         }),
 
-        getApplications : build.query<GetApplicationsResult, {pageNumber:number, pageSize:number}>({
+        getApplications : build.query<GetPaginatedItemsResult<Application>, {pageNumber:number, pageSize:number}>({
             query: (pagination) => ({
                 url: '/applications',
                 params: {
@@ -36,8 +36,8 @@ export const applicationApi = createApi({
 })
 
 
-export interface GetApplicationsResult{
-    items:Application[]
+export interface GetPaginatedItemsResult<T>{
+    items:T[]
     totalCount:number
     pageNumber: number
     totalPages:number

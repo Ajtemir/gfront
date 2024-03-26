@@ -154,5 +154,8 @@
   "Members": "Участники",
   "Create a member": "Создать участника",
   "Go to person detail": "Перейти к деталям",
-  "Go back to application": "Перейти к заявлению"
+  "Go back to application": "Перейти к заявлению",
+  "Crete person": "Создать гражданина",
+  "Create entity": "Создать юр. лицо",
+  "Passport series and number": "Серия и номер паспорта"
 }

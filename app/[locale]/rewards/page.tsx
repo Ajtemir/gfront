@@ -116,7 +116,7 @@ const RewardsPage = () => {
           <Link href="/rewards/create">
             <ButtonGroup variant="contained">
               <Button startIcon={<PlusIcon fontSize="small" />}>
-                {t('create a reward')}
+                {t('Сreate a reward')}
               </Button>
             </ButtonGroup>
           </Link>

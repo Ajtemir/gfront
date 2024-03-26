@@ -145,7 +145,7 @@ const Candidates = ({sx}: CandidatesProps) => {
         <Link href='/candidates/create'>
           <ButtonGroup variant='contained'>
             <Button startIcon={<PlusIcon fontSize='small'/>}>
-              {t('create a candidate')}
+              {t('Сreate a candidate')}
             </Button>
           </ButtonGroup>
         </Link>

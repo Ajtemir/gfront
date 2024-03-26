@@ -58,7 +58,7 @@ export const GridGenderSelectFormikField = (props:FormikTextFieldProps) => {
     return (
         <GridSelectFormikField
             {...props}
-            selectOptions={[{value: 2, label:'Male'}, {value:1, label: 'Female'}]}
+            selectOptions={[{value: 'Male', label:'Male'}, {value:'Female', label: 'Female'}]}
         />
     )
 }

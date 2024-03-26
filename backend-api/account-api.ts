@@ -3,7 +3,7 @@ import { fetchWithCredentials } from "@/backend-api/fetch-with-credentials";
 import { UserSchema } from "@/schemas";
 import { backendUrl } from "@/env-variables";
 import {Application} from "@/types/application";
-import {GetApplicationsResult} from "@/backend-api/application-api";
+import {GetPaginatedItemsResult} from "@/backend-api/application-api";
 
 const baseUrl = `${backendUrl}/account`
 

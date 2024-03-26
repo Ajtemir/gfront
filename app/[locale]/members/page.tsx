@@ -4,6 +4,7 @@ import {Box, Button, ButtonGroup, Container, Typography} from "@mui/material";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {Plus as PlusIcon} from "@/icons/plus";
 import {useTranslations} from "next-intl";
+import {MembersTable} from "@/components/members/MembersTable";
 
 const Members = () => {
     const t = useTranslations()
@@ -23,12 +24,12 @@ const Members = () => {
                 <Link href='/members/create'>
                     <ButtonGroup variant='contained'>
                         <Button startIcon={<PlusIcon fontSize='small'/>}>
-                            {t('create a member')}
+                            {t('Create a member')}
                         </Button>
                     </ButtonGroup>
                 </Link>
             </Box>
-
+            <MembersTable/>
         </Container>
     );
 };

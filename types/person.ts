@@ -10,8 +10,7 @@ export interface Person {
     patronymicName?: string
     fullName?: string
     gender: Gender
-    passportNumber?: string
-    passportSeries?: string
+    passportSeriesNumber?: string
     pin?: string
     registeredAddress?: string
     actualAddress?: string
