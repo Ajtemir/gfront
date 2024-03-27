@@ -14,4 +14,6 @@ export interface Person {
     pin?: string
     registeredAddress?: string
     actualAddress?: string
+    image?: string
+    imageName?: string
 }

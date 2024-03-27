@@ -3,6 +3,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchWithCredentials } from "@/backend-api/fetch-with-credentials";
 import { CandidateWithoutImageArraySchema } from "@/schemas";
 import { Candidate, CandidateWithoutImage } from "@/types/candidate";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {BaseQueryFn, FetchArgs} from "@reduxjs/toolkit/dist/query/react";
+
 
 const baseUrl = `${backendUrl}/candidates`;
 
@@ -41,6 +44,29 @@ const useDeleteCandidate = () => {
       queryClient.removeQueries(candidateKeys.detail(candidateId))
   })
 }
+
+
+export const candidateApi = createApi({
+  reducerPath: 'candidateAPI',
+  baseQuery: <BaseQueryFn<string | FetchArgs, unknown, {data:{errors?:{[field: string] : string;}, status:number, title:string, detail:string}}, {}>>(
+      fetchBaseQuery({
+        baseUrl: backendUrl,
+      })
+  ),
+  endpoints: (build) => ({
+
+    getCandidatesByPersonId : build.query<Candidate[], number>({
+      query: (personId) => ({
+        url: `/Candidates/GetCandidatesByPersonId/${personId}`,
+      })
+    }),
+
+  })
+})
+
+export const {
+  useGetCandidatesByPersonIdQuery
+} = candidateApi
 
 export {
   useCandidates,

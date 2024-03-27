@@ -10,10 +10,11 @@ import {childrenApi} from "@/backend-api/children-api";
 import {memberApi} from "@/backend-api/member-api";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import toast from "react-hot-toast";
+import {candidateApi} from "@/backend-api/candidate-api";
 export const rtkQueryErrorLogger: Middleware =
     (api: MiddlewareAPI) => (next) => (action) => {
         if (isRejected(action)) {
-            const error = action.payload as {data:{errors?:{[field: string] : string;}, status:number, title:string, detail:string}}
+            const error = action.payload as Exception
             if(error.data.detail){
                 toast.error(error.data.detail)
             }
@@ -27,6 +28,16 @@ export const rtkQueryErrorLogger: Middleware =
 
         return next(action);
     }
+
+export interface Exception {
+    data: {
+        errors?: { [field: string]: string; },
+        status: number,
+        title: string,
+        detail: string
+    }
+}
+
 const rootReducer = combineReducers({
     [applicationApi.reducerPath]: applicationApi.reducer,
     [documentApi.reducerPath]: documentApi.reducer,
@@ -35,6 +46,7 @@ const rootReducer = combineReducers({
     [documentViewSlice.reducerPath]: documentViewSlice.reducer,
     [noteSlice.reducerPath]: noteSlice.reducer,
     [memberApi.reducerPath]: memberApi.reducer,
+    [candidateApi.reducerPath]: candidateApi.reducer,
 })
 
 export const store =
@@ -47,6 +59,7 @@ export const store =
                 .concat(rewardApi.middleware)
                 .concat(childrenApi.middleware)
                 .concat(memberApi.middleware)
+                .concat(candidateApi.middleware)
                 .concat(rtkQueryErrorLogger)
                 ;
         }

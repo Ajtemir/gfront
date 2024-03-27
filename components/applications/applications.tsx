@@ -41,7 +41,7 @@ const Applications = ({applications}:{applications: Application[]}) => {
                             <TableRow key={application.id}>
                                 <TableCell>{application.id}</TableCell>
                                 <TableCell>{application.reward.nameRu}</TableCell>
-                                <TableCell>{application.candidate.candidateTypeId}</TableCell>
+                                <TableCell>{application.candidate.candidateType}</TableCell>
                                 <TableCell>{application.candidate.id}</TableCell>
                                 <TableCell style={{
                                     display: 'flex',

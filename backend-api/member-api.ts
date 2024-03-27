@@ -1,15 +1,18 @@
-import {createApi, EndpointBuilder, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {BaseQueryFn, createApi, EndpointBuilder, FetchArgs, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {backendUrl} from "@/env-variables";
 import {Application} from "@/types/application";
 import {Person} from "@/types/person";
 import {GetPaginatedItemsResult} from "@/backend-api/application-api";
 import {Member} from "@/types/member";
+import {Exception} from "@/store/store";
 
 export const memberApi = createApi({
     reducerPath: 'memberAPI',
-    baseQuery: fetchBaseQuery({
-        baseUrl: backendUrl
-    }),
+    baseQuery: <BaseQueryFn<string | FetchArgs, unknown, Exception, {}>>(
+        fetchBaseQuery({
+            baseUrl: backendUrl,
+        })
+    ),
     endpoints: (build) => ({
 
         getPersonDataByPin : build.query<Person, string>({
@@ -39,11 +42,8 @@ export const memberApi = createApi({
         }),
 
         getMemberById : build.query<Member, number>({
-            query: (pagination) => ({
-                url: '/Members/GetMembers',
-                params: {
-                    pagination
-                }
+            query: (id) => ({
+                url: `/Members/GetPersonById/${id}`,
             })
         }),
 
@@ -55,6 +55,7 @@ export const {
     useGetPersonDataByPinQuery,
     useGetMembersQuery,
     useCreatePersonMutation,
+    useGetMemberByIdQuery,
 } = memberApi
 
 

@@ -19,11 +19,26 @@ import {
 import toast from "react-hot-toast";
 import {formatYupError} from "@/utils/format-yup-error";
 import {UpdateCitizenImageSchema} from "@/schemas";
-import {UpdateCitizenImage} from "@/types/citizen";
+import {CreateCitizen, UpdateCitizenImage} from "@/types/citizen";
 import {Person} from "@/types/person";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {ImageUploader} from "@/components/image-uploader";
+import {megabytesToBytes} from "@/utils/megabytes-to-bytes";
+import {useImageUploader} from "@/hooks/use-image-uploader";
+import {FileWithPath} from "react-dropzone";
+import {fileToBase64} from "@/utils/file-to-base64";
 
 const CreatePerson = () => {
+
+    const onImageAccepted = async (image: FileWithPath) => {
+        let base64 = await fileToBase64(image) as string;
+        base64 = base64.split(',')[1]
+        await formik.setFieldValue(nameof<Person>('image'), base64)
+        await formik.setFieldValue(nameof<Person>('imageName'), image.name)
+    }
+    const imageMaxSizeMb = 3;
+    const {image, preview, setPreview, handleAccepted, handleRejected} = useImageUploader({imageMaxSizeMb, onImageAccepted})
+
     const initialValues = {
         pin:''
     } as Person
@@ -63,6 +78,9 @@ const CreatePerson = () => {
                     await formik.setFieldValue(nameof<Person>('deathDate'), data.deathDate ? formatter.dateTime(data.deathDate) : null)
                     await formik.setFieldValue(nameof<Person>('registeredAddress'), data.registeredAddress)
                     await formik.setFieldValue(nameof<Person>('passportSeriesNumber'), data.passportSeriesNumber)
+                    await formik.setFieldValue(nameof<Person>('image'), data.image)
+                    await formik.setFieldValue(nameof<Person>('imageName'), data.pin + '.jpg')
+                    setPreview(`data:image/jpeg;base64,${data.image}`)
                 }
                 if(error){
                     throw error
@@ -143,6 +161,21 @@ const CreatePerson = () => {
                         />
 
                     </Grid>
+                </CardContent>
+            </Card>
+
+            <Card sx={{mt: 3}}>
+                <CardContent>
+                    <ImageUploader
+                        image={image}
+                        preview={preview}
+                        onDropAccepted={handleAccepted}
+                        onDropRejected={handleRejected}
+                        imageWidth={640}
+                        imageHeight={400}
+                        uploadIconSize={32}
+                        maxSize={megabytesToBytes(imageMaxSizeMb)}
+                    />
                 </CardContent>
             </Card>
 
