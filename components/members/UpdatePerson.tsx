@@ -6,29 +6,34 @@ import {nameof} from "@/utils/nameof";
 import {Person} from "@/types/person";
 import GridFormikDatePicker from "@/components/GridFormikDatePicker";
 import {GridGenderSelectFormikField} from "@/components/GridSelectFormikField";
-import {ImageUploader} from "@/components/image-uploader";
-import {megabytesToBytes} from "@/utils/megabytes-to-bytes";
-import {SubmitButton} from "@/components/buttons/submit-button";
 import {useFormik} from "formik";
 import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
-import {useFormatter, useTranslations} from "next-intl/dist/src/react-server";
-import {useCreatePersonMutation, useLazyGetPersonDataByPinQuery} from "@/backend-api/member-api";
+import {useFormatter, useTranslations} from "next-intl";
+import {
+    useCreatePersonMutation,
+    useLazyGetPersonDataByPinQuery,
+    useUpdatePersonMutation
+} from "@/backend-api/member-api";
+import {SubmitButton} from "@/components/buttons/submit-button";
 
-const UpdatePerson = () => {
-    const initialValues = {
-        pin:''
-    } as Person
+interface UpdatePersonProps {
+    person: Person
+}
+const UpdatePerson = ({person}:UpdatePersonProps) => {
+    const initialValues = person
     const router = useRouter()
     const formatter = useFormatter()
     const t = useTranslations()
+    const [updatePerson] = useUpdatePersonMutation()
     const formik= useFormik({
         initialValues: initialValues,
         onSubmit: async (person) => {
-            const createPersonCall = async () => {
-                const createdPerson = await createPerson(person).unwrap()
-                router.push(`members/${createdPerson.id}`)
-            }
+            await toast.promise(updatePerson(person).unwrap(), {
+                loading: 'Loading',
+                success: 'Success',
+                error: 'Error'
+            })
         }
     })
     return (
@@ -67,7 +72,6 @@ const UpdatePerson = () => {
                             name={nameof<Person>('pin')}
                             label='Pin'
                             formik={formik}
-                            onKeyDown={onChange}
                         />
 
                         <GridFormikTextField
@@ -94,12 +98,17 @@ const UpdatePerson = () => {
                             formik={formik}
                         />
 
+                        <Grid md={12} xs={12}>
+                            <ButtonGroup variant='contained'>
+                                <SubmitButton color='success'>
+                                    {t('Save')}
+                                </SubmitButton>
+                            </ButtonGroup>
+                        </Grid>
+
                     </Grid>
                 </CardContent>
             </Card>
-
-
-
         </Box>
     );
 };

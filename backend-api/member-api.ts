@@ -5,6 +5,8 @@ import {Person} from "@/types/person";
 import {GetPaginatedItemsResult} from "@/backend-api/application-api";
 import {Member} from "@/types/member";
 import {Exception} from "@/store/store";
+import {FileWithPath} from "react-dropzone";
+import {Avatar} from "@/types/avatar";
 
 export const memberApi = createApi({
     reducerPath: 'memberAPI',
@@ -41,9 +43,31 @@ export const memberApi = createApi({
             })
         }),
 
-        getMemberById : build.query<Member, number>({
+        getMemberById : build.query<Person, number>({
             query: (id) => ({
                 url: `/Members/GetPersonById/${id}`,
+            })
+        }),
+
+        updatePerson : build.mutation<Person, Person>({
+            query: (person) => ({
+                url: '/members/updatePerson',
+                method: 'POST',
+                body: person
+            })
+        }),
+
+        getAvatar : build.query<Avatar, number>({
+            query:(avatarId) => ({
+                url: `/images/getImage/${avatarId}`,
+            })
+        }),
+
+        updateAvatar : build.mutation<Avatar, Avatar>({
+            query: (avatar) => ({
+                url: '/members/updateAvatar',
+                method: 'POST',
+                body: avatar
             })
         }),
 
@@ -56,6 +80,9 @@ export const {
     useGetMembersQuery,
     useCreatePersonMutation,
     useGetMemberByIdQuery,
+    useUpdatePersonMutation,
+    useGetAvatarQuery,
+    
 } = memberApi
 
 

@@ -8,10 +8,8 @@ import MemberCandidatesTable from "@/components/candidates/MemberCandidatesTable
 import {Box, Button, ButtonGroup, Container, Icon, Typography} from "@mui/material";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {Plus as PlusIcon} from "@/icons/plus";
-import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
-import {log} from "util";
-import {Exception} from "@/store/store";
-import toast from "react-hot-toast";
+import UpdatePerson from "@/components/members/UpdatePerson";
+import AvatarComponent from "@/components/avatars/AvatarComponent";
 interface UpdateMemberProps {
     params:{
         memberId:number
@@ -43,9 +41,11 @@ const UpdateMember = ({params}: UpdateMemberProps) => {
                 </Link>
             </Box>
 
+            {isLoadingPerson && <RowSkeletonGroup/>}
+            {person && <UpdatePerson person={person}/>}
             {isLoadingCandidates && <RowSkeletonGroup/>}
             {candidates && <MemberCandidatesTable candidates={candidates}/>}
-            {/*{errorCandidates && {(errorCandidates as Exception).data.detail}}*/}
+            {person?.avatarId && <AvatarComponent avatarId={person.avatarId}/>}
         </Container>
     );
 };

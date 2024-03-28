@@ -16,4 +16,5 @@ export interface Person {
     actualAddress?: string
     image?: string
     imageName?: string
+    avatarId?: number
 }
