@@ -72,8 +72,8 @@ const PersonDetailView = ({person}:PersonDetailProps) => {
                     <PropertyListItem
                         align={align}
                         divider
-                        label={t('Passport number')}
-                        value={person.passportNumber ?? ''}
+                        label={t('Passport series and number')}
+                        value={person.passportSeriesNumber ?? ''}
                     />
                     <PropertyListItem
                         align={align}

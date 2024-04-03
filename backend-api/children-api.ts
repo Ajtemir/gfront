@@ -2,6 +2,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {backendUrl} from "@/env-variables";
 import {Child} from "@/types/child";
 import {ChildListItem} from "@/types/childListItem";
+import {ChildInfo} from "@/types/ChildInfo";
 
 export const childrenApi = createApi({
     reducerPath: 'childrenAPI',
@@ -38,6 +39,15 @@ export const childrenApi = createApi({
             })
         }),
 
+        GetChildById : build.query<ChildInfo, number>({
+            query: (childId: number) => ({
+                url: '/Children/GetChild',
+                params: {
+                    childId: childId
+                }
+            })
+        }),
+
     })
 })
 
@@ -45,4 +55,5 @@ export const {
     useGetChildrenByMotherIdQuery,
     useAddChildToMotherMutation,
     useLazyGetChildrenByMotherIdFromZagsThroughPinQuery,
+    useGetChildByIdQuery
 } = childrenApi

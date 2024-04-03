@@ -12,7 +12,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography, Skeleton
+  Typography, Skeleton, Card, CardContent, CardHeader
 } from "@mui/material";
 import { SxProps, Theme } from '@mui/material/styles'
 import { useFormatter, useTranslations } from "next-intl";
@@ -25,6 +25,16 @@ import { ChipPropsColorOverrides } from "@mui/material/Chip/Chip";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {ArrowRightIconButton} from "@/components/buttons/arrow-right-icon-button";
 import {PencilIconButton} from "@/components/buttons/pencil-icon-button";
+import {FormikTextField} from "@/components/formik-text-field";
+import {nameof} from "@/utils/nameof";
+import {CreateMother} from "@/types/mother";
+import Grid from "@mui/material/Unstable_Grid2";
+import {useFormik} from "formik";
+import GridFormikTextField from "@/components/GridFormikTextField";
+import {Person} from "@/types/person";
+import React from "react";
+import {SubmitButton} from "@/components/buttons/submit-button";
+import SearchBar from "@/components/search/SearchBar";
 
 // colSpan={0} is not working
 const RowSkeleton = ({colSpan}: {colSpan: number}) => (
@@ -131,6 +141,7 @@ const Candidates = ({sx}: CandidatesProps) => {
 
   return (
     <Container maxWidth='md' sx={sx}>
+      <SearchBar/>
       <Box
         display='flex'
         justifyContent='space-between'
@@ -145,7 +156,7 @@ const Candidates = ({sx}: CandidatesProps) => {
         <Link href='/candidates/create'>
           <ButtonGroup variant='contained'>
             <Button startIcon={<PlusIcon fontSize='small'/>}>
-              {t('Сreate a candidate')}
+              {t('Сreate candidate')}
             </Button>
           </ButtonGroup>
         </Link>

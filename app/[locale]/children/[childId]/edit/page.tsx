@@ -21,6 +21,7 @@ import {ArrowLeft as ArrowLeftIcon} from "@/icons/arrow-left";
 import {useTranslations} from "next-intl";
 import {setDocument} from "@/store/reducers/documentViewReducer";
 import PersonDetailView from "@/components/person/PersonDetailView";
+import {useGetChildByIdQuery} from "@/backend-api/children-api";
 
 interface UpdateChildProps {
     params:{
@@ -29,6 +30,7 @@ interface UpdateChildProps {
 }
 const UpdateChild = ({params}:UpdateChildProps) => {
     const t = useTranslations()
+    const {data:child, isLoading:isLoadingChild, error:errorChild} = useGetChildByIdQuery(params.childId)
     const {data:documents, isLoading, error} = useGetDocumentsByChildIdQuery(params.childId)
     setDocument(null)
     return (
@@ -45,14 +47,17 @@ const UpdateChild = ({params}:UpdateChildProps) => {
                     {t('Edit child')}
                 </Typography>
 
-                <Link href='/candidates/'>
-                    <ButtonGroup variant='contained'>
-                        <Button startIcon={<ArrowLeftIcon fontSize='small' />}>
-                            {t('Candidates')}
-                        </Button>
-                    </ButtonGroup>
-                </Link>
+                {child &&
+                    <Link href={`/candidates/${child.motherId}/edit`}>
+                        <ButtonGroup variant='contained'>
+                            <Button startIcon={<ArrowLeftIcon fontSize='small' />}>
+                                {t('Go to mother')}
+                            </Button>
+                        </ButtonGroup>
+                    </Link>
+                }
             </Box>
+            {child && <PersonDetailView person={child.person}/>}
             <Card sx={{mt: 3}}>
                 <CardHeader title={('Documents')}/>
                 <Divider/>
