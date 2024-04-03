@@ -36,8 +36,9 @@ const FormikDatePicker = ({
   // @ts-ignore
   const localizedLabel = t(label)
 
-  function handleDateChange<TValue, TError>(value: TValue, _: FieldChangeHandlerContext<TError>) {
-    formik.setFieldValue(name, value)
+  async function handleDateChange<TValue, TError>(value: TValue, _: FieldChangeHandlerContext<TError>) {
+    await formik.setFieldValue(name, (value as Date))
+    console.log(formik.values.birthDate)
   }
 
 

@@ -15,6 +15,10 @@ export const rtkQueryErrorLogger: Middleware =
     (api: MiddlewareAPI) => (next) => (action) => {
         if (isRejected(action)) {
             const error = action.payload as Exception
+            console.log(error)
+            if(error.status === 404){
+                toast.error("This route not exist")
+            }
             if(error.data.detail){
                 toast.error(error.data.detail)
             }
@@ -23,6 +27,10 @@ export const rtkQueryErrorLogger: Middleware =
                     toast.error(error.data.errors[errorsKey])
                     console.error(error.data.errors[errorsKey])
                 }
+            }
+            else {
+                toast.error('500')
+                console.error('500')
             }
         }
 
@@ -34,8 +42,9 @@ export interface Exception {
         errors?: { [field: string]: string; },
         status: number,
         title: string,
-        detail: string
+        detail?: string
     }
+    status:number
 }
 
 const rootReducer = combineReducers({

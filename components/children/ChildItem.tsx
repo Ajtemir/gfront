@@ -29,9 +29,6 @@ const ChildItem = ({child:childArgument}:ChildItemProps) => {
                 <Link href={`/children/${child.id}/edit`}>
                     <PencilIconButton/>
                 </Link>
-                <Link href={`/applications/create?candidateId=${child.id}`}>
-                    <PlusIcon/>
-                </Link>
             </TableCell>
         </TableRow>
     );

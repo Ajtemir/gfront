@@ -16,6 +16,7 @@ import {
     useUpdatePersonMutation
 } from "@/backend-api/member-api";
 import {SubmitButton} from "@/components/buttons/submit-button";
+import {formatDateOnly} from "@/utils/format-date-only";
 
 interface UpdatePersonProps {
     person: Person
@@ -29,6 +30,7 @@ const UpdatePerson = ({person}:UpdatePersonProps) => {
     const formik= useFormik({
         initialValues: initialValues,
         onSubmit: async (person) => {
+            console.log(person.birthDate)
             await toast.promise(updatePerson(person).unwrap(), {
                 loading: 'Loading',
                 success: 'Success',
@@ -62,7 +64,7 @@ const UpdatePerson = ({person}:UpdatePersonProps) => {
                             formik={formik}
                         />
 
-                        <GridFormikTextField
+                        <GridFormikDatePicker
                             name={nameof<Person>('birthDate')}
                             label='Birth date'
                             formik={formik}

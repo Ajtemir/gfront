@@ -9,15 +9,18 @@ export const ToasterAdapter = () => {
       <Toaster>
           {(t) => (
               <ToastBar toast={t}>
-                  {({ icon, message }) => (
-                      <>
+                  {({ icon, message }) => {
+                      if(t.type === "error"){
+                          t.duration = 5000000;
+                      }
+                      return <>
                           {icon}
                           {message}
                           {t.type === 'error' && (
                               <button onClick={() => toast.dismiss(t.id)}>X</button>
                           )}
                       </>
-                  )}
+                  }}
               </ToastBar>
           )}
       </Toaster>

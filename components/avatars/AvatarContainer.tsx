@@ -1,5 +1,5 @@
 import React from 'react';
-import {ButtonGroup, Card, CardContent, CardHeader, Divider} from "@mui/material";
+import {Button, ButtonGroup, Card, CardContent, CardHeader, Divider} from "@mui/material";
 import {ImageUploader} from "@/components/image-uploader";
 import {megabytesToBytes} from "@/utils/megabytes-to-bytes";
 import {SubmitButton} from "@/components/buttons/submit-button";
@@ -11,8 +11,9 @@ import {UpdateCitizenImage} from "@/types/citizen";
 import {useImageUploader} from "@/hooks/use-image-uploader";
 import {useFormik} from "formik";
 import {Avatar} from "@/types/avatar";
-import {useGetAvatarQuery} from "@/backend-api/member-api";
+import {useGetAvatarQuery, useUpdateAvatarMutation} from "@/backend-api/member-api";
 import {RowSkeletonGroup} from "@/components/RowSkeleton";
+import toast from "react-hot-toast";
 
 
 
@@ -20,11 +21,15 @@ interface AvatarContainerProps {
     avatar: Avatar
 }
 export const AvatarContainer = ({avatar}:AvatarContainerProps) => {
-
+    const [updateAvatar] = useUpdateAvatarMutation()
     const formik = useFormik({
         initialValues: avatar,
-        onSubmit:(values) => {
-
+        onSubmit:async (values) => {
+            await toast.promise(updateAvatar(values).unwrap(), {
+                loading: 'Loading',
+                success: 'Success',
+                error: 'Error'
+            })
         }
     })
     const t = useTranslations()
@@ -39,7 +44,7 @@ export const AvatarContainer = ({avatar}:AvatarContainerProps) => {
     const {image, preview, setPreview, setImage, handleAccepted, handleRejected} = useImageUploader({
         imageMaxSizeMb,
         onImageAccepted,
-        previewInitial: `data:image/jpeg;base64,${avatar.image}`
+        previewInitial: avatar.image ? `data:image/jpeg;base64,${avatar.image}` : null
     })
     return (
         <Card sx={{mt: 3}}>
@@ -64,6 +69,14 @@ export const AvatarContainer = ({avatar}:AvatarContainerProps) => {
                         <SubmitButton color='success'>
                             {t('Save')}
                         </SubmitButton>
+                        <Button color='error' onClick={async (_) => {
+                            setImage(null)
+                            setPreview(null)
+                            await formik.setFieldValue(nameof<Avatar>('image'), null)
+                            await formik.setFieldValue(nameof<Avatar>('imageName'), null)
+                        }}>
+                            {t('Delete')}
+                        </Button>
                     </ButtonGroup>
                 </form>
             </CardContent>

@@ -28,7 +28,7 @@ const PersonDetailView = ({person}:PersonDetailProps) => {
                 action={
                     <ButtonGroup variant='contained'>
                         <Button startIcon={<ArrowLeftIcon fontSize='small'/>} onClick={() => {
-                            router.push(`/members/${person.id}`)
+                            router.push(`/members/${person.id}/edit`)
                         }}>
                             {t('Go to person detail')}
                         </Button>

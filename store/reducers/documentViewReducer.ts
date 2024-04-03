@@ -9,7 +9,7 @@ export const documentViewSlice = createSlice(
         initialState: initialState,
         name:"documentView",
         reducers: {
-            setDocument: (state, action: PayloadAction<Document>) => {
+            setDocument: (state, action: PayloadAction<Document | null>) => {
                 console.log('state worked')
                state.document = action.payload;
             },

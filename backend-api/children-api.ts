@@ -27,7 +27,16 @@ export const childrenApi = createApi({
                 },
                 method: 'POST'
             })
-        })
+        }),
+
+        getChildrenByMotherIdFromZagsThroughPin : build.query<void, number>({
+            query: (motherId: number) => ({
+                url: '/Children/GetChildrenByMotherIdFromZagsThroughPin',
+                params: {
+                    motherId: motherId
+                }
+            })
+        }),
 
     })
 })
@@ -35,4 +44,5 @@ export const childrenApi = createApi({
 export const {
     useGetChildrenByMotherIdQuery,
     useAddChildToMotherMutation,
+    useLazyGetChildrenByMotherIdFromZagsThroughPinQuery,
 } = childrenApi

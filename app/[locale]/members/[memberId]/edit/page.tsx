@@ -29,7 +29,7 @@ const UpdateMember = ({params}: UpdateMemberProps) => {
                 mb={3}
             >
                 <Typography variant='h4'>
-                    {t('Candidates')}
+                    {t('Person')}
                 </Typography>
 
                 <Link href='/candidates/create'>

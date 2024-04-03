@@ -7,6 +7,7 @@ import {Member} from "@/types/member";
 import {Exception} from "@/store/store";
 import {FileWithPath} from "react-dropzone";
 import {Avatar} from "@/types/avatar";
+import {formatDateOnly} from "@/utils/format-date-only";
 
 export const memberApi = createApi({
     reducerPath: 'memberAPI',
@@ -53,7 +54,11 @@ export const memberApi = createApi({
             query: (person) => ({
                 url: '/members/updatePerson',
                 method: 'POST',
-                body: person
+                body: {
+                    ...person,
+                    birthDate: formatDateOnly(person.birthDate),
+                    deathDate: formatDateOnly(person.deathDate ?? null),
+                }
             })
         }),
 
@@ -65,7 +70,7 @@ export const memberApi = createApi({
 
         updateAvatar : build.mutation<Avatar, Avatar>({
             query: (avatar) => ({
-                url: '/members/updateAvatar',
+                url: '/images/updateImage',
                 method: 'POST',
                 body: avatar
             })
@@ -82,7 +87,7 @@ export const {
     useGetMemberByIdQuery,
     useUpdatePersonMutation,
     useGetAvatarQuery,
-    
+    useUpdateAvatarMutation,
 } = memberApi
 
 

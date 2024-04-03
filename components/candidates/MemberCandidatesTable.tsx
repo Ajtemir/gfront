@@ -37,7 +37,7 @@ const MemberCandidatesTable = ({candidates}:MemberCandidatesTableProps) => {
                                     <Link href={`/members/${candidate.id}`}>
                                         <ArrowRightIconButton/>
                                     </Link>
-                                    <Link href={`/members/${candidate.id}/edit`}>
+                                    <Link href={`/candidates/${candidate.id}/edit`}>
                                         <PencilIconButton/>
                                     </Link>
                                     <Link href={`/applications/create?candidateId=${candidate.id}`}>

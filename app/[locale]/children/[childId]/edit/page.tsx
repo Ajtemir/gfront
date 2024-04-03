@@ -19,6 +19,8 @@ import PdfViewer from "@/components/Documents/PdfViewer";
 import {ProgressLink as Link} from "@/components/progress-link";
 import {ArrowLeft as ArrowLeftIcon} from "@/icons/arrow-left";
 import {useTranslations} from "next-intl";
+import {setDocument} from "@/store/reducers/documentViewReducer";
+import PersonDetailView from "@/components/person/PersonDetailView";
 
 interface UpdateChildProps {
     params:{
@@ -28,6 +30,7 @@ interface UpdateChildProps {
 const UpdateChild = ({params}:UpdateChildProps) => {
     const t = useTranslations()
     const {data:documents, isLoading, error} = useGetDocumentsByChildIdQuery(params.childId)
+    setDocument(null)
     return (
         <Container>
             <Box
@@ -39,10 +42,10 @@ const UpdateChild = ({params}:UpdateChildProps) => {
                 mb={3}
             >
                 <Typography variant='h4'>
-                    {t('create a candidate')}
+                    {t('Edit child')}
                 </Typography>
 
-                <Link href='/candidates'>
+                <Link href='/candidates/'>
                     <ButtonGroup variant='contained'>
                         <Button startIcon={<ArrowLeftIcon fontSize='small' />}>
                             {t('Candidates')}
@@ -50,7 +53,6 @@ const UpdateChild = ({params}:UpdateChildProps) => {
                     </ButtonGroup>
                 </Link>
             </Box>
-
             <Card sx={{mt: 3}}>
                 <CardHeader title={('Documents')}/>
                 <Divider/>
