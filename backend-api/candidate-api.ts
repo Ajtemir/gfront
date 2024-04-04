@@ -61,11 +61,20 @@ export const candidateApi = createApi({
       })
     }),
 
+    getCandidates : build.query<Candidate[], GetCandidatesProps>({
+      query: (getCandidatesProps) => ({
+        url: `/Candidates/GetCandidates`,
+        params: getCandidatesProps,
+      })
+    })
+
   })
 })
 
 export const {
-  useGetCandidatesByPersonIdQuery
+  useGetCandidatesByPersonIdQuery,
+  useLazyGetCandidatesQuery,
+  useGetCandidatesQuery,
 } = candidateApi
 
 export {

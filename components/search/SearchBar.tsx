@@ -8,20 +8,17 @@ import {SubmitButton} from "@/components/buttons/submit-button";
 import {useFormik} from "formik";
 import {CreateMother} from "@/types/mother";
 import {useTranslations} from "next-intl";
+import {useLazyGetCandidatesQuery} from "@/backend-api/candidate-api";
 
-interface SearchBarProps {
-    setItems : () => void
-}
 
-interface SearchProps {
-    pin: string
-    fullName: string
-}
 const SearchBar = () => {
     const t = useTranslations()
+    const [getCandidates, {}] = useLazyGetCandidatesQuery()
     const formik = useFormik({
-        initialValues: {} as SearchProps,
-        onSubmit: (values) => {}
+        initialValues: {} as GetCandidatesProps,
+        onSubmit: (values) => {
+            getCandidates(values)
+        }
     })
     return (
 
@@ -31,17 +28,15 @@ const SearchBar = () => {
                     <Grid container spacing={3}>
 
                         <GridFormikTextField
-                            name={nameof<SearchProps>('fullName')}
+                            name={nameof<GetCandidatesProps>('fullname')}
                             label='Fullname'
                             formik={formik}
-                            required
                         />
 
                         <GridFormikTextField
-                            name={nameof<SearchProps>('pin')}
+                            name={nameof<GetCandidatesProps>('pin')}
                             label='Pin'
                             formik={formik}
-                            required
                         />
 
                     </Grid>

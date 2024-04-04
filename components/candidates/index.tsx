@@ -17,7 +17,7 @@ import {
 import { SxProps, Theme } from '@mui/material/styles'
 import { useFormatter, useTranslations } from "next-intl";
 import { Plus as PlusIcon } from '@/icons/plus'
-import { useCandidates } from "@/backend-api/candidate-api";
+import {useCandidates, useGetCandidatesQuery, useLazyGetCandidatesQuery} from "@/backend-api/candidate-api";
 import { CandidateWithoutImage } from "@/types/candidate";
 import { CandidateType } from "@/types/candidate-type";
 import { OverridableStringUnion } from "@mui/types";
@@ -138,6 +138,7 @@ const Candidates = ({sx}: CandidatesProps) => {
   const t = useTranslations()
 
   const {data: candidates = [], isLoading} = useCandidates()
+  // const {data, isLoading, isFetching, error, refetch} = useGetCandidatesQuery()
 
   return (
     <Container maxWidth='md' sx={sx}>
