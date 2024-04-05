@@ -1,4 +1,7 @@
 interface GetCandidatesProps {
-    pin:string
-    fullname: string
+    pin?:string
+    fullname?: string
+    pageSize:number
+    pageNumber: number
+    candidateType: string
 }

@@ -5,6 +5,7 @@ import { CandidateWithoutImageArraySchema } from "@/schemas";
 import { Candidate, CandidateWithoutImage } from "@/types/candidate";
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {BaseQueryFn, FetchArgs} from "@reduxjs/toolkit/dist/query/react";
+import {GetPaginatedItemsResult} from "@/backend-api/application-api";
 
 
 const baseUrl = `${backendUrl}/candidates`;
@@ -61,7 +62,7 @@ export const candidateApi = createApi({
       })
     }),
 
-    getCandidates : build.query<Candidate[], GetCandidatesProps>({
+    getCandidates : build.query<GetPaginatedItemsResult<CandidateWithoutImage>, GetCandidatesProps>({
       query: (getCandidatesProps) => ({
         url: `/Candidates/GetCandidates`,
         params: getCandidatesProps,

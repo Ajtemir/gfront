@@ -12,7 +12,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography, Skeleton, Card, CardContent, CardHeader
+  Typography, Skeleton, Card, CardContent, CardHeader, LinearProgress, TablePagination, TextField
 } from "@mui/material";
 import { SxProps, Theme } from '@mui/material/styles'
 import { useFormatter, useTranslations } from "next-intl";
@@ -32,25 +32,19 @@ import Grid from "@mui/material/Unstable_Grid2";
 import {useFormik} from "formik";
 import GridFormikTextField from "@/components/GridFormikTextField";
 import {Person} from "@/types/person";
-import React from "react";
+import React, {useState} from "react";
 import {SubmitButton} from "@/components/buttons/submit-button";
 import SearchBar from "@/components/search/SearchBar";
+import {useGetApplicationsQuery} from "@/backend-api/application-api";
+import Applications from "@/components/applications/applications";
 
-// colSpan={0} is not working
-const RowSkeleton = ({colSpan}: {colSpan: number}) => (
-  <tr>
-    <td colSpan={colSpan}>
-      <Skeleton variant='text' height='45px'/>
-    </td>
-  </tr>
-)
 
 type ChipColor = OverridableStringUnion<
   'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning',
   ChipPropsColorOverrides
 >;
 
-const CandidatesTable = ({candidates, isLoading}: { candidates: CandidateWithoutImage[], isLoading: boolean }) => {
+const CandidatesTable = ({candidates}: { candidates: CandidateWithoutImage[]}) => {
   const t = useTranslations()
   const formatter = useFormatter()
   
@@ -83,16 +77,7 @@ const CandidatesTable = ({candidates, isLoading}: { candidates: CandidateWithout
           </TableRow>
         </TableHead>
         <TableBody>
-          {isLoading ? (
-              <>
-                <RowSkeleton colSpan={8}/>
-                <RowSkeleton colSpan={8}/>
-                <RowSkeleton colSpan={8}/>
-                <RowSkeleton colSpan={8}/>
-                <RowSkeleton colSpan={8}/>
-              </>
-            ) :
-            candidates.map(candidate => (
+          {candidates.map(candidate => (
               <TableRow key={candidate.id}>
                 <TableCell>{candidate.id}</TableCell>
                 <TableCell>{candidate.name}</TableCell>
@@ -123,7 +108,6 @@ const CandidatesTable = ({candidates, isLoading}: { candidates: CandidateWithout
                 </TableCell>
               </TableRow>
             ))}
-
         </TableBody>
       </Table>
     </TableContainer>
@@ -136,13 +120,59 @@ interface CandidatesProps {
 
 const Candidates = ({sx}: CandidatesProps) => {
   const t = useTranslations()
+  const [queryProps, setQueryProps] = useState({pageNumber:0, pageSize:10} as GetCandidatesProps)
+  const {data , isLoading, isFetching, error, refetch} = useGetCandidatesQuery({...queryProps, pageNumber: queryProps.pageNumber + 1})
+  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) =>
+  {
+    setQueryProps({...queryProps, pageNumber:newPage})
+  };
 
-  const {data: candidates = [], isLoading} = useCandidates()
-  // const {data, isLoading, isFetching, error, refetch} = useGetCandidatesQuery()
-
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,) =>
+  {
+    setQueryProps({...queryProps, pageSize:parseInt(event.target.value, 10), pageNumber:0})
+  };
+  const formik = useFormik({
+    initialValues: queryProps,
+    onSubmit: (values) => {
+      refetch()
+    }
+  })
   return (
     <Container maxWidth='md' sx={sx}>
-      <SearchBar/>
+      <Box component='form' onSubmit={formik.handleSubmit}>
+        <Card>
+          <CardContent>
+            <Grid container spacing={3}>
+
+              <Grid md={6} xs={12}>
+              <TextField
+                  name={nameof<GetCandidatesProps>('fullname')}
+                  label='Fullname'
+                  onChange={e => {setQueryProps({...queryProps, fullname: e.target.value})}}
+                  fullWidth
+              />
+              </Grid>
+
+              <Grid md={6} xs={12}>
+              <TextField
+                  name={nameof<GetCandidatesProps>('pin')}
+                  label='Pin'
+                  onChange={e => {setQueryProps({...queryProps, pin: e.target.value})}}
+                  fullWidth
+              />
+              </Grid>
+
+            </Grid>
+            <Grid md={12} xs={12} mt={3} mb={3}>
+              <ButtonGroup variant='contained'>
+                <SubmitButton color='success'>
+                  {t('Search')}
+                </SubmitButton>
+              </ButtonGroup>
+            </Grid>
+          </CardContent>
+        </Card>
+      </Box>
       <Box
         display='flex'
         justifyContent='space-between'
@@ -163,7 +193,21 @@ const Candidates = ({sx}: CandidatesProps) => {
         </Link>
       </Box>
 
-      <CandidatesTable candidates={candidates} isLoading={isLoading}/>
+      {isLoading && <LinearProgress variant="indeterminate"/>}
+      {
+          data?.items &&
+          <>
+            <CandidatesTable candidates={data.items}/>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25,]}
+                count={data.totalCount}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                page={queryProps.pageNumber}
+                rowsPerPage={queryProps.pageSize}
+            />
+          </>
+      }
     </Container>
   );
 };
