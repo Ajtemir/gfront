@@ -87,7 +87,7 @@ const AuthProvider: FC<AuthProviderProps> = (props) => {
 
     initialize().catch(console.error)
   }, []);
-  
+
   useEffect(() => {
     if (user) {
       storeUser(user)

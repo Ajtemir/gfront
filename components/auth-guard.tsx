@@ -37,6 +37,9 @@ export const AuthGuard = ({children, requiredRoles}: AuthGuardProps) => {
   const router = useRouter()
 
   useEffect(() => {
+    if(window.location.pathname === '/en/account/auth-infocom'){
+      return
+    }
     if (!auth.user) {
       router.push('/login')
       toast.error('Unauthorized')
@@ -45,7 +48,9 @@ export const AuthGuard = ({children, requiredRoles}: AuthGuardProps) => {
       toast.error('Forbidden')
     }
   }, [auth.user, requiredRoles, router]);
-  
+  if(window.location.pathname === '/en/account/auth-infocom'){
+    return <>{children}</>;
+  }
   if (!auth.user) return null
   
   return <>{children}</>;

@@ -48,12 +48,27 @@ export const childrenApi = createApi({
             })
         }),
 
+        authInfocom : build.query<void, AuthInfocomProps>({
+            query: (childId) => ({
+                url: '/account/AuthInfocom',
+                params: {
+                    ...childId,
+                    redirectUrl: window.location.origin + '/account/auth-infocom',
+                }
+            })
+        }),
+
     })
 })
 
+export interface AuthInfocomProps {
+    code:string;
+    state:string;
+}
 export const {
     useGetChildrenByMotherIdQuery,
     useAddChildToMotherMutation,
     useLazyGetChildrenByMotherIdFromZagsThroughPinQuery,
-    useGetChildByIdQuery
+    useGetChildByIdQuery,
+    useAuthInfocomQuery
 } = childrenApi

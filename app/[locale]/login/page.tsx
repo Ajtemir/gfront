@@ -146,6 +146,17 @@ const Login = () => {
                   {t("Log in")}
                 </Button>
               </ButtonGroup>
+
+              <Button
+                  fullWidth
+                  size="large"
+                  variant="contained"
+                  color='success'
+                  onClick={() => router.push(`https://auth.infocom.kg/oauth/authorize?client_id=gosnagrada&scope=pin&redirect_uri=${window.location.origin}/account/auth-infocom&response_type=code&state=00fbch50p1wc3260d7e`)}
+                  sx={{mt: 2}}
+              >
+                Войти через Е-Кызмат
+              </Button>
             </Box>
           </CardContent>
         </Card>
